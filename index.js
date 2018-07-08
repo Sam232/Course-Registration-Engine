@@ -1,6 +1,4 @@
 const express = require("express");
-const session = require("express-session");
-const passport = require("passport");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
@@ -30,6 +28,12 @@ app.use("/lecturer", lecturer);
 app.use("/student", student);
 app.use("/login", login);
 app.use("/logout", logout);
+
+app.use((req, res, next) => {
+  res.status(200).json({
+    message: "Welcome To GTUC CR RestAPI"
+  });
+});
 
 var PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
