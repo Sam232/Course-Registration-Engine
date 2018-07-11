@@ -115,7 +115,7 @@ router.post("/:linkId", (req, res) => {
                   });
                 }
     
-                var message = `Dear ${lecturerDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:5000/lecturer/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
+                var message = `Dear ${lecturerDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:3000/lecturer/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
                 
                 EmailAPI(Mailgun, lecturerDetails, message).then((sent) => {
                   if(sent){
@@ -196,7 +196,7 @@ router.post("/:linkId", (req, res) => {
                     });
                   }
                   
-                  var message = `Dear ${financeDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:5000/finance/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
+                  var message = `Dear ${financeDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:3000/finance/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
     
                   EmailAPI(Mailgun, financeDetails, message).then((sent) => {
                     if(sent){
@@ -278,7 +278,7 @@ router.post("/:linkId", (req, res) => {
                       });
                     }
                     
-                    var message = `Dear ${adminDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:5000/admin/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
+                    var message = `Dear ${adminDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:3000/admin/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
       
                     EmailAPI(Mailgun, adminDetails, message).then((sent) => {
                       if(sent){
