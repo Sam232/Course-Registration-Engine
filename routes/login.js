@@ -468,7 +468,7 @@ router.post("/", (req, res) => {
 router.post("/verify/student-email", (req, res) => {
   var email = req.body.email;
 
-  if(email){
+  if(validator.validate(email)){
     return StudentPD.findOne({
       email
     }).then((studentDetails) => {
@@ -514,7 +514,7 @@ router.post("/verify/student-email", (req, res) => {
     });
   }
   res.status(404).json({
-    errorMsg: "Email Address Is Required"
+    errorMsg: "Valid Email Address Is Required"
   });
 });
 
