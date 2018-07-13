@@ -846,7 +846,7 @@ router.put("/update/student/:id", verifyToken, (req, res) => {
   });
 });
 
-//Uppdate Student-Login
+//Update Student-Login
 router.put("/update/student-login/", verifyToken, (req, res) => {
   var loginDetails = {
     indexNumber: req.body.indexNumber,

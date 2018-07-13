@@ -126,5 +126,56 @@ module.exports = {
     res.status(404).json({
       errorMsg: "Token Is Required"
     });
+  },
+  verifyUpdateToke: (req, res, next) => {
+    var bearerHeader = req.headers["authorization"];
+    
+    if(bearerHeader !== "undefined"){
+      var bearer = bearerHeader.split(" ");
+      var token = bearer[1];
+
+      if(token){
+        return jwt.verify(token, "secretKey", (err, authData) => {
+          if(err){
+            if(err.name == "TokenExpiredError"){
+              return res.status(404).json({
+                errorMsg: "The Password Update Link Has Expired"
+              });
+            }
+            if(err.message == "invalid token"){
+              return res.status(404).json({
+                errorMsg: "Valid Token Required"
+              });
+            }
+            if(err.message == "jwt malformed"){
+              return res.status(404).json({
+                errorMsg: "Valid Token Required"
+              });
+            }
+          }
+          StudentLogin.findOne({
+            indexNumber: authData.indexNumber
+          }).then((loginDetails) => {
+            if(loginDetails){
+              if(loginDetails){
+                req.indexNumber = authData.indexNumber;
+                return next();
+              }
+            }
+          })
+          .catch((err) => {
+            if(err){
+              res.status(404).json({
+                err,
+                errorMsg: "An Error Occured, Try Again"
+              });
+            }
+          });
+        });
+      }
+    }
+    res.status(404).json({
+      errorMsg: "Token Is Required"
+    });
   }
 };

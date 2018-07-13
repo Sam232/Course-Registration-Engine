@@ -14,6 +14,8 @@ const Login = require("../models/Login");
 
 const {EmailAPI} = require("../config/EmailAPI");
 
+const {verifyUpdateToken} = require("../config/verifyToken");
+
 //Verify LinkID
 router.get("/verify/:linkId", (req, res) => {
   var linkId = req.params.linkId;
@@ -461,5 +463,112 @@ router.post("/", (req, res) => {
     }
   });
 });
+
+//Verify Student Email 
+router.post("/verify/student-email", (req, res) => {
+  var email = req.body.email;
+
+  if(email){
+    return StudentPD.findOne({
+      email
+    }).then((studentDetails) => {
+      if(studentDetails){
+        return jwt.sign({indexNumber: studentDetails.indexNumber}, "secretKey", {expiresIn: "300000"}, (err, token) => {
+          if(err){
+            return res.status(404).json({
+              err,
+              errorMsg: "An Error Occured, Try Again"
+            });
+          }
+
+          var message = `Dear, ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=http://localhost:3000/login/update/${token}>UpdatePasswordLink</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
+
+          EmailAPI(Mailgun, studentDetails, message).then((sent) => {
+            if(sent){
+              return res.status(200).json({
+                msg: "A password update link has been sent to your email.",
+                emailSent: true
+              });
+            }
+          })
+          .catch((err) => {
+            if(err){
+              res.status(404).json({
+                err,
+                errorMsg: "An Error Occured, Try Again"
+              });
+            }
+          });
+        });
+      }
+      res.status(404).json({
+        errorMsg: "Email Address Does Not Exist"
+      });
+    })
+    .catch((err) => {
+      if(err){
+        res.status(404).json({
+          errorMsg: "Email Address Does Not Exist"
+        });
+      }
+    });
+  }
+  res.status(404).json({
+    errorMsg: "Email Address Is Required"
+  });
+});
+
+//Update Student Password
+router.post("/update/password", verifyUpdateToken, (req, res) => {
+  var loginDetails = {
+    indexNumber: req.indexNumber,
+    password: req.body.password
+  }
+
+  if(password){
+    return bcrypt.hash(password, 10).then((hash) => {
+      if(hash){
+        return StudentLogin.findOneAndUpdate({
+          indexNumber: loginDetails.indexNumber
+        }, {
+          $set: {
+            password: hash
+          }
+        }, {new: true}).then((updatedDetails) => {
+          if(updatedDetails){
+            return res.status(200).json({
+              msg: "Password Updated Successfully",
+              updateState: "successful"
+            });
+          }
+          res.status(404).json({
+            errorMsg: "Unable To Update Password, Try Again",
+            updatedState: "unsuccessful"
+          });
+        })
+        .catch((err) => {
+          if(err){
+            res.status(404).json({
+              err,
+              errorMsg: "An Error Occured, Try Again"
+            });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      if(err){
+        res.status(404).json({
+          err,
+          errorMsg: "An Error Occured, Try Again"
+        });
+      }
+    });
+  }
+  res.status(404).json({
+    errorMsg: "Password Is Required"
+  });
+});
+
 
 module.exports = router;

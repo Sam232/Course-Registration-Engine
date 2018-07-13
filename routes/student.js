@@ -290,4 +290,212 @@ router.post("/add/course/:studentId", verifyStudentToken, (req, res) => {
   });
 });
 
+//Update Student
+router.put("/update/:id", verifyStudentToken, (req, res) => {
+  var studentDetails = {
+    id: req.params.id,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    mobileNumber: req.body.mobileNumber,
+    indexNumber: req.body.indexNumber
+  };
+
+  if(!ObjectID.isValid(studentDetails.id)){
+    return res.status(404).json({
+      errorMsg: "Invalid Student ID Provided"
+    });
+  }
+
+  if(!validator.validate(studentDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  if(studentDetails.mobileNumber.length !== 10 && studentDetails.mobileNumber.substring(0, 1) !== 0){
+    return res.status(404).json({
+      errorMsg: "Valid Mobile Number Is Required"
+    });
+  }
+
+  StudentPD.find({
+    _id: {$ne: studentDetails.id}
+  }).then((students) => {
+    var newStudent = students.filter(student => student.email == studentDetails.email || student.mobileNumber == studentDetails.mobileNumber || student.indexNumber == studentDetails.indexNumber);
+
+    if(newStudent.length > 0){
+      if(newStudent[0].email == studentDetails.email){
+        return res.status(404).json({
+          errorMsg: "Provided Email Address Of The Student Already Exist"
+        });
+      }
+      else if(newStudent[0].mobileNumber == studentDetails.mobileNumber){
+        return res.status(404).json({
+          errorMsg: "Provided Mobile Number Of The Student Already Exist"
+        });
+      }
+      else{
+        return res.status(404).json({
+          errorMsg: "Provided Index Number Of The Student Already Exist"
+        });
+      }
+    }
+
+    StudentPD.findByIdAndUpdate(studentDetails.id, {
+      $set: {
+        firstName: studentDetails.firstName,
+        lastName: studentDetails.lastName,
+        email: studentDetails.email,
+        mobileNumber: studentDetails.mobileNumber,
+        indexNumber: studentDetails.indexNumber
+      }
+    }, {new: false}).then((oldDetails) => {
+      if(oldDetails){
+        return StudentLogin.findOneAndUpdate({
+          indexNumber: oldDetails.indexNumber
+        }, {
+          $set: {
+            indexNumber: studentDetails.indexNumber
+          }
+        }, {new: true}).then((newLoginDetails) => {
+          if(newLoginDetails){
+            return res.status(200).json({
+              updateState: "successful"
+            });
+          }
+          res.status(200).json({
+            updateState: "unsuccessful"
+          });
+        })
+        .catch((err) => {
+          if(err){
+            res.status(200).json({
+              err,
+              updateState: "unsuccessful"
+            });
+          }
+        });
+      }
+      res.status(404).json({
+        errorMsg: "Unable To Update Student\'s PD"
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Update Student\'s PD"
+      });
+    });
+  })
+  .catch((err) => {
+    res.status(404).json({
+      err,
+      errorMsg: "Unable To Fetch The Documents Containing The Student\'s PD"
+    });
+  });
+});
+
+//Update Student-Login
+router.put("/update/student-login/", verifyStudentToken, (req, res) => {
+  var loginDetails = {
+    indexNumber: req.body.indexNumber,
+    oldPassword: req.body.oldPassword,
+    newPassword: req.body.newPassword
+  };
+
+  if(loginDetails.oldPassword.length < 8){
+    return res.status(404).json({
+      errorMsg: "The Length Of The Old Password Must Greater Than 8"
+    });
+  }
+
+  if(loginDetails.newPassword.length < 8){
+    return res.status(404).json({
+      errorMsg: "The Length Of The New Password Must Greater Than 8"
+    });
+  }
+
+  if(loginDetails.oldPassword == loginDetails.newPassword){
+    return res.status(404).json({
+      errorMsg: "The Old And New Password Must Not Be The Same"
+    });
+  }
+
+  if(!/[^a-zA-Z0-9]/.test(loginDetails.newPassword)){
+    return res.status(404).json({
+      errorMsg: "The New Password Must Contain Alphabets And A Symbol. Numbers Can Be Included But It Is Optional"
+    });
+  }
+
+  StudentLogin.findOne({
+    indexNumber: loginDetails.indexNumber
+  }).then((studentLoginDetails) => {
+    if(studentLoginDetails){
+      return bcrypt.compare(loginDetails.oldPassword, studentLoginDetails.password).then((result) => {
+        if(result){
+          return bcrypt.hash(loginDetails.newPassword, 10).then((hash) => {
+            if(hash){
+              return StudentLogin.findOneAndUpdate({
+                indexNumber: loginDetails.indexNumber
+              }, {
+                $set: {
+                  password: hash
+                }
+              }, {new: true}).then((updatedLoginDetails) => {
+                if(updatedLoginDetails){
+                  return res.status(200).json({
+                    updateState: "successful"
+                  });
+                }
+                res.status(200).json({
+                  updateState: "unsuccessful"
+                });
+              })
+              .catch((err) => {
+                if(err){
+                  res.status(404).json({
+                    errorMsg: "An Error Occurred While Updating Login Details, Try Again"
+                  });
+                }
+              });
+            }
+            res.status(404).json({
+              errorMsg: "An Error Occurred While Updating Login Details, Try Again"
+            });
+          })
+          .catch((err) => {
+            if(err){
+              res.status(404).json({
+                errorMsg: "An Error Occurred While Updating Login Details, Try Again"
+              });
+            }
+          })
+        }
+        res.status(404).json({
+          errorMsg: "The Old Password Provided Is Incorrect"
+        });
+      })
+      .catch((err) => {
+        if(err){
+          console.log(err)
+          res.status(404).json({
+            errorMsg: "An Error Occurred, Try Again"
+          });
+        }
+      });
+    }
+    res.status(404).json({
+      errorMsg: "No Student\'s Index Number Matches The Provided Index Number"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        errorMsg: "An Error Occurred, Try Again"
+      });
+    }
+  });
+});
+
 module.exports = router;
