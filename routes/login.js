@@ -523,10 +523,10 @@ router.post("/update/password", verifyUpdateToken, (req, res) => {
   var loginDetails = {
     indexNumber: req.indexNumber,
     password: req.body.password
-  }
+  };
 
-  if(password){
-    return bcrypt.hash(password, 10).then((hash) => {
+  if(loginDetails.password){
+    return bcrypt.hash(loginDetails.password, 10).then((hash) => {
       if(hash){
         return StudentLogin.findOneAndUpdate({
           indexNumber: loginDetails.indexNumber
