@@ -127,7 +127,7 @@ module.exports = {
       errorMsg: "Token Is Required"
     });
   },
-  verifyUpdateToke: (req, res, next) => {
+  verifyUpdateToken: (req, res, next) => {
     var bearerHeader = req.headers["authorization"];
     
     if(bearerHeader !== "undefined"){
