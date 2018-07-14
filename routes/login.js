@@ -481,7 +481,7 @@ router.post("/verify/student-email", (req, res) => {
             });
           }
 
-          var message = `Dear, ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=http://localhost:3000/login/update/${token}>UpdatePasswordLink</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
+          var message = `Dear, ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=http://localhost:3000/login/update/password/${token}>UpdatePasswordLink</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
 
           EmailAPI(Mailgun, studentDetails, message).then((sent) => {
             if(sent){
