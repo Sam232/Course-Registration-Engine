@@ -537,7 +537,7 @@ router.post("/update/password", verifyUpdateToken, (req, res) => {
         }, {new: true}).then((updatedDetails) => {
           if(updatedDetails){
             return res.status(200).json({
-              msg: "Password Updated Successfully",
+              msg: "Password Updated Successfully. You Can Now Login.",
               updateState: "successful"
             });
           }
