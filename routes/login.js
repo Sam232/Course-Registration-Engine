@@ -571,7 +571,7 @@ router.post("/update/password", verifyUpdateToken, (req, res) => {
 });
 
 //Verify Token
-router.get("/verify/token", verifyPageToken, (req, res) => {
+router.get("/verify/page/token", verifyPageToken, (req, res) => {
   res.status(200).json({
     verifyState: "Token Is Valid"
   });
