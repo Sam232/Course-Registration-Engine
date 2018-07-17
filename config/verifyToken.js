@@ -177,5 +177,39 @@ module.exports = {
     res.status(404).json({
       errorMsg: "Token Is Required"
     });
+  },
+  verifyPageToken: (req, res, next) => {
+    var bearerHeader = req.headers["authorization"];
+
+    if(bearerHeader !== undefined){
+      var bearer = bearerHeader.split(" ");
+      var token = bearer[1];
+
+      if(token){
+        return jwt.verify(token, "secretKey", (err, authData) => {
+          if(err){
+            if(err.name == "TokenExpiredError"){
+              return res.status(404).json({
+                errorMsg: "The Password Update Link Has Expired"
+              });
+            }
+            if(err.message == "invalid token"){
+              return res.status(404).json({
+                errorMsg: "Valid Token Required"
+              });
+            }
+            if(err.message == "jwt malformed"){
+              return res.status(404).json({
+                errorMsg: "Valid Token Required"
+              });
+            }
+          }
+          next();
+        });
+      }
+    }
+    res.status(404).json({
+      errorMsg: "Token Is Required"
+    });
   }
 };

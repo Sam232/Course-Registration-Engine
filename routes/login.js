@@ -14,7 +14,7 @@ const Login = require("../models/Login");
 
 const {EmailAPI} = require("../config/EmailAPI");
 
-const {verifyUpdateToken} = require("../config/verifyToken");
+const {verifyUpdateToken, verifyPageToken} = require("../config/verifyToken");
 
 //Verify LinkID
 router.get("/verify/:linkId", (req, res) => {
@@ -570,5 +570,11 @@ router.post("/update/password", verifyUpdateToken, (req, res) => {
   });
 });
 
+//Verify Token
+router.get("/verify/token", verifyPageToken, (req, res) => {
+  res.status(200).json({
+    verifyState: "Token Is Valid"
+  });
+});
 
 module.exports = router;
