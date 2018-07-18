@@ -375,7 +375,6 @@ router.post("/", (req, res) => {
     indexNumber: studentDetails.indexNumber
   }).then((fetchedDetails) => {
     if(fetchedDetails){
-      console.log(fetchedDetails)
       return bcrypt.compare(studentDetails.password, fetchedDetails.password).then((result) => {
         if(result){
           return StudentLogin.findByIdAndUpdate(fetchedDetails._id, {
