@@ -144,6 +144,7 @@ router.get("/view/lecturers", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
+      lecturers,
       message: "No Lecturers Added Yet"
     });
   })
@@ -368,6 +369,7 @@ router.get("/view/finance", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
+      finance,
       message: "No Financial Accountant Added Yet"
     });
   })
@@ -593,6 +595,7 @@ router.get("/view/students", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
+      student,
       message: "No Students Added Yet"
     });
   })
