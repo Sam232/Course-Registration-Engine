@@ -96,8 +96,8 @@ router.put("/update/admin/:id", verifyToken, (req, res) => {
 router.get("/welcome", verifyToken, (req, res) => {
   var usersNumber = {};
 
-  LecturerPD.count().then((lecturesNumbers) => {
-    usersNumber.lectures = lecturesNumbers || 0;
+  LecturerPD.count().then((lecturersNumbers) => {
+    usersNumber.lecturers = lecturersNumbers || 0;
 
     FinancePD.count().then((financeNumber) => {
       usersNumber.financialAccountants = financeNumber || 0;
