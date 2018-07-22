@@ -158,6 +158,38 @@ router.get("/view/lecturers", verifyToken, (req, res) => {
   });
 });
 
+//Get One Lecturer
+router.get("/view/single/lecturer/:id", verifyToken, (req, res) => {
+  var lecturerId = req.params.id;
+  if(!ObjectID.isValid(lecturerId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  LecturerPD.findById(lecturerId).then((personalDetails) => {
+    if(personalDetails){
+      res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      personalDetails,
+      errorMsg: "Unable To Fetch Lecturer\'s Details",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errMsg: "Unable To Fetch Lecturer\'s Personal Details"
+      });
+    }
+  });
+});
+
 //Add Lecturer
 router.post("/add/lecturer", verifyToken, (req, res) => {
   var lecturerPD = {
@@ -224,7 +256,6 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
     })
     .catch((err) => {
       if(err){
-        console.log(err)
         res.status(404).json({
           err,
           errorMsg: "Unable To Add Lecturer, Try Again"
@@ -375,9 +406,41 @@ router.get("/view/finance", verifyToken, (req, res) => {
   })
   .catch((err) => {
     if(err){
-      res.status(200).json({
+      res.status(404).json({
         err,
         errMsg: "Unable To Fetch Financial Accountant(s) Personal Details"
+      });
+    }
+  });
+});
+
+//Get One Finance
+router.get("/view/single/finance/:id", verifyToken, (req, res) => {
+  var financeId = req.params.id;
+  if(!ObjectID.isValid(financeId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  financePD.findById(financeId).then((personalDetails) => {
+    if(personalDetails){
+      res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      personalDetails,
+      errorMsg: "Unable To Fetch Financial Accountant\'s Details",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errMsg: "Unable To Fetch Financial Accountant\'s Personal Details"
       });
     }
   });
@@ -604,6 +667,38 @@ router.get("/view/students", verifyToken, (req, res) => {
       res.status(200).json({
         err,
         errMsg: "Unable To Fetch Students Personal Details"
+      });
+    }
+  });
+});
+
+//Get One Student
+router.get("/view/single/student/:id", verifyToken, (req, res) => {
+  var studentId = req.params.id;
+  if(!ObjectID.isValid(studentId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  StudentPD.findById(studentId).then((personalDetails) => {
+    if(personalDetails){
+      res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      personalDetails,
+      errorMsg: "Unable To Fetch Student\'s Details",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errMsg: "Unable To Fetch Student\'s Personal Details"
       });
     }
   });
