@@ -906,7 +906,7 @@ router.put("/update/student/:id", verifyToken, (req, res) => {
         }, {new: true}).then((newLoginDetails) => {
           if(newLoginDetails){
             return res.status(200).json({
-              updateState: studentDetails
+              updateState: "successful"
             });
           }
           res.status(200).json({
