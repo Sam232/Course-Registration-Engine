@@ -176,7 +176,7 @@ router.get("/view/single/lecturer/:id", verifyToken, (req, res) => {
     }
     res.status(200).json({
       personalDetails,
-      errorMsg: "Unable To Fetch Lecturer\'s Details",
+      msg: "No Lecturer\'s ID Matches The Provided ID",
       queryState: "unsuccessful"
     });
   })
@@ -423,7 +423,7 @@ router.get("/view/single/finance/:id", verifyToken, (req, res) => {
     });
   }
 
-  financePD.findById(financeId).then((personalDetails) => {
+  FinancePD.findById(financeId).then((personalDetails) => {
     if(personalDetails){
       return res.status(200).json({
         personalDetails,
@@ -432,7 +432,7 @@ router.get("/view/single/finance/:id", verifyToken, (req, res) => {
     }
     res.status(200).json({
       personalDetails,
-      errorMsg: "Unable To Fetch Financial Accountant\'s Details",
+      msg: "No Financial Accountant\'s ID Matches The Provided ID",
       queryState: "unsuccessful"
     });
   })
@@ -690,7 +690,7 @@ router.get("/view/single/student/:id", verifyToken, (req, res) => {
     }
     res.status(200).json({
       personalDetails,
-      errorMsg: "Unable To Fetch Student\'s Details",
+      msg: "No Student\'s ID Matches The Provided ID",
       queryState: "unsuccessful"
     });
   })
