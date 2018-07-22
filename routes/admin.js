@@ -562,12 +562,12 @@ router.put("/update/finance/:id", verifyToken, (req, res) => {
     if(newFinance.length > 0){
       if(newFinance[0].email == financeDetails.email){
         return res.status(404).json({
-          errorMsg: "Provided Email Address Of The Lecturer Already Exist"
+          errorMsg: "Provided Email Address Of The Financial Accountant Already Exist"
         });
       }
       else{
         return res.status(404).json({
-          errorMsg: "Provided Mobile Number Of The Lecturer Already Exist"
+          errorMsg: "Provided Mobile Number Of The Financial Accountant Already Exist"
         });
       }
     }
