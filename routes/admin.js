@@ -169,7 +169,7 @@ router.get("/view/single/lecturer/:id", verifyToken, (req, res) => {
 
   LecturerPD.findById(lecturerId).then((personalDetails) => {
     if(personalDetails){
-      res.status(200).json({
+      return res.status(200).json({
         personalDetails,
         queryState: "successful"
       });
@@ -425,7 +425,7 @@ router.get("/view/single/finance/:id", verifyToken, (req, res) => {
 
   financePD.findById(financeId).then((personalDetails) => {
     if(personalDetails){
-      res.status(200).json({
+      return res.status(200).json({
         personalDetails,
         queryState: "successful"
       });
@@ -683,7 +683,7 @@ router.get("/view/single/student/:id", verifyToken, (req, res) => {
 
   StudentPD.findById(studentId).then((personalDetails) => {
     if(personalDetails){
-      res.status(200).json({
+      return res.status(200).json({
         personalDetails,
         queryState: "successful"
       });
