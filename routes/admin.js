@@ -175,7 +175,6 @@ router.get("/view/single/lecturer/:id", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
-      personalDetails,
       msg: "No Lecturer\'s ID Matches The Provided ID",
       queryState: "unsuccessful"
     });
@@ -431,7 +430,6 @@ router.get("/view/single/finance/:id", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
-      personalDetails,
       msg: "No Financial Accountant\'s ID Matches The Provided ID",
       queryState: "unsuccessful"
     });
@@ -689,7 +687,6 @@ router.get("/view/single/student/:id", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
-      personalDetails,
       msg: "No Student\'s ID Matches The Provided ID",
       queryState: "unsuccessful"
     });
