@@ -507,7 +507,7 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
       return Payment.find({
         financeId
       }).then((payments) => {
-        if(payments){
+        if(payments.length > 0){
           return res.status(200).json({
             payments,
             queryState: "successful"
