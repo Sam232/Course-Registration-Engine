@@ -1269,4 +1269,27 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
   });
 });
 
+//Fetch Registration Date
+router.get("/view/registration-date", verifyToken, (req, res) => {
+  RDates.find({}).then((rdates) => {
+    if(rdates.length > 0){
+      return res.status(200).json({
+        rdates: rdates[0],
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "An Error Occured, Try Again"
+      });
+    }
+  });
+});
+
 module.exports = router;
