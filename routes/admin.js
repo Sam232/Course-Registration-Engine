@@ -491,6 +491,56 @@ router.get("/view/single/finance/:id", verifyToken, (req, res) => {
   });
 });
 
+//View Payment
+router.get("/view/payments/:financeId", verifyToken, (req, res) => {
+  var financeId = req.params.financeId;
+
+  if(!ObjectID.isValid(financeId)){
+    return res.status(404).json({
+      errorMsg: "Invalid Finance ID Provided"
+    });
+  }
+
+  FinancePD.findById(financeId).then((financeDetails) => {
+    if(financeDetails){
+      return Payment.find({
+        financeId
+      }).then((payments) => {
+        if(payments){
+          return res.status(200).json({
+            payments,
+            queryState: "successful"
+          });
+        }
+        res.status(200).json({
+          payments: [],
+          queryState: "successful",
+          msg: "No Payments Enabled"
+        });
+      })
+      .catch((err) => {
+        if(err){
+          res.status(404).json({
+            err,
+            errorMsg: "Unable To Fetch Payments, Try Again"
+          });
+        }
+      })
+    }
+    res.status(404).json({
+      errorMsg: "No Financial Accountant\'s ID Matches The Provided ID"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "An Error Occured, Try Again"
+      });
+    }
+  });
+});
+
 //Add Finance
 router.post("/add/finance", verifyToken, (req, res) => {
   var financePD = {

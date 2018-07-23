@@ -90,16 +90,19 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
 
   FinancePD.findById(financeId).then((financeDetails) => {
     if(financeDetails){
-      return Payment.find({}).then((payments) => {
+      return Payment.find({
+        financeId
+      }).then((payments) => {
         if(payments){
           return res.status(200).json({
             payments,
             queryState: "successful"
           });
         }
-        res.status(404).json({
-          errorMsg: "Unable To Fetch Payments, Try Again",
-          queryState: "successful"
+        res.status(200).json({
+          payments: [],
+          queryState: "successful",
+          msg: "No Payments Enabled"
         });
       })
       .catch((err) => {
