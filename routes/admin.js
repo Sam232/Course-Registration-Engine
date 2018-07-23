@@ -22,6 +22,40 @@ const {SMSAPI} = require("../config/SMSAPI");
 
 const {verifyToken} = require("../config/verifyToken");
 
+//Confirm Admin Update
+router.post("/confirm-update/", verifyToken, (req, res) => {
+  var emailDetails = {
+    adminFirstName: req.body.firstName,
+    email: req.body.adminEmail,
+    loginToken: req.body.loginToken,
+    token: req.body.token
+  }
+
+  if(!validator.validate(emailDetails.adminEmail)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token} target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you.`;
+
+  EmailAPI(Mailgun, emailDetails, message).then((sent) => {
+    if(sent){
+      return res.status(200).json({
+        emailSent: true
+      });
+    }
+  })
+  .catch((err) => {
+    if(err){
+      return res.status(404).json({
+        err,
+        emailSent: false
+      });
+    }
+  });
+});
+
 //Update Admin
 router.put("/update/admin/:id", verifyToken, (req, res) => {
   var adminDetails = {
@@ -29,8 +63,7 @@ router.put("/update/admin/:id", verifyToken, (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    mobileNumber: req.body.mobileNumber,
-    linkId: uuid()
+    mobileNumber: req.body.mobileNumber
   };
 
   if(!ObjectID.isValid(adminDetails.id)){
@@ -56,32 +89,17 @@ router.put("/update/admin/:id", verifyToken, (req, res) => {
       firstName: adminDetails.firstName,
       lastName: adminDetails.lastName,
       email: adminDetails.email,
-      mobileNumber: adminDetails.mobileNumber,
-      linkId: adminDetails.linkId
+      mobileNumber: adminDetails.mobileNumber
     }
   }, {new: true}).then((updatedDetails) => {
     if(updatedDetails){
-      var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:5000/login/${personalDetails.linkId} target=_blank>login link</a>`;
-      
-      return EmailAPI(Mailgun, updatedDetails, message).then((sent) => {
-        if(sent){
-          return res.status(200).json({
-            AdminPD: updatedDetails,
-            emailSent: true
-          });
-        }
-      })
-      .catch((err) => {
-        if(err){
-          return res.status(404).json({
-            err,
-            AdminPD: updatedDetails,
-            emailSent: false
-          });
-        }
+      return res.status(200).json({
+        AdminPD: updatedDetails,
+        updateState: "successful"
       });
     }
     res.status(404).json({
+      updateState: "unsuccessful",
       errorMsg: "Unable To Update Admin\'s PD"
     });
   })
