@@ -1160,7 +1160,7 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
     if(removedRDates){
       return new RDates(registrationDates).save().then((rdates) => {
         if(rdates){
-          return StudentPD.find({}).then((students) => {
+          return StudentPD.find().then((students) => {
             if(students.length > 0){
               students.forEach((value, index) => {
                 if(value){
@@ -1226,7 +1226,7 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
         }
         res.status(404).json({
           errorMsg: "Unable To Add New Registration Dates",
-          addState: "successful"
+          addState: "unsuccessful"
         });
       })
       .catch((err) => {
