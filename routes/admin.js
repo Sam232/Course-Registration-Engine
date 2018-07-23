@@ -189,6 +189,53 @@ router.get("/view/single/lecturer/:id", verifyToken, (req, res) => {
   });
 });
 
+//View Lecturer's Courses
+router.get("/view/course/:lecturerId", verifyToken, (req, res) => {
+  var lecturerId = req.params.lecturerId;
+
+  if(!ObjectID.isValid(lecturerId)){
+    return res.status(404).json({
+      errorMsg: "Invalid Lecturer ID Provided"
+    });
+  }
+
+  LecturerPD.findById(lecturerId).then((lecturerDetails) => {
+    if(lecturerDetails){
+      return Course.find({
+        lecturerId
+      }).then((courses) => {
+        if(courses.length > 0){
+          return res.status(200).json({
+            courses,
+            queryState: "successful"
+          });
+        } 
+        res.status(200).json({
+          courses: [],
+          queryState: "successful"
+        });
+      })
+      .catch((err) => {
+        if(err){
+          res.status(404).json({
+            errorMsg: "An Error Occurered While Fetching Courses, Try Again"
+          });
+        }
+      });
+    }
+    res.status(404).json({
+      errorMsg: "No Lecturer\'s ID Matches The Provided ID"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        errorMsg: "An Error Occurered While Verifying The Provided Lecturer ID, Try Again"
+      });
+    }
+  });
+});
+
 //Add Lecturer
 router.post("/add/lecturer", verifyToken, (req, res) => {
   var lecturerPD = {

@@ -196,7 +196,7 @@ router.get("/view/course/:lecturerId", verifyToken, (req, res) => {
           });
         } 
         res.status(200).json({
-          courses,
+          courses: [],
           queryState: "successful"
         });
       })
