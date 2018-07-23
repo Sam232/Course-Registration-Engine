@@ -14,6 +14,7 @@ module.exports = {
     var sendMsg = new Promise((resolve, reject) => {
       nexmo.message.sendSms(message.from, message.to, message.message, (err, response) => {
         if(err){
+          console.log(err)
           reject(err);
         }
         else{

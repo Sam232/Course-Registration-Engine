@@ -1163,10 +1163,9 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
           return StudentPD.find({}).then((students) => {
             if(students.length > 0){
               students.forEach((value, index) => {
-                console.log(value)
                 if(value){
                   //send sms to students
-                  var message = `Dear ${value.firstName}, you can now register for your semester\'s courses on the GTUC COURSE-REG platform. Please registration start from today to ${rdates.endDate}, thank you!!`
+                  var message = `Dear ${value.firstName}, you can now register for your semester\'s courses on the GTUC COURSE-REG platform. Please registration start from today to ${rdates.endDate}, thank you!!`;
                   return SMSAPI(Nexmo, message, "+233"+value.mobileNumber).then((res) => {
                     if(res){
                       return null;
