@@ -1,8 +1,8 @@
 module.exports = {
   SMSAPI: (Nexmo, message, mobileNumber) => {
     var nexmo = new Nexmo({
-      apiKey: process.env.NEXMON_APIKEY,
-      apiSecret: process.env.NEXMON_APISECRET
+      apiKey: process.env.NEXMON_APIKEY || "2a4a5111",
+      apiSecret: process.env.NEXMON_APISECRET || "OZDjvpWYAMLglt4l"
     });
 
     var message = {
