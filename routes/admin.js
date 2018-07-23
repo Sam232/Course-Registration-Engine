@@ -957,7 +957,7 @@ router.put("/update/student-login/", verifyToken, (req, res) => {
 
   if(loginDetails.newPassword.length < 8){
     return res.status(404).json({
-      errorMsg: "The Length Of The New Password Must Greater Than 8"
+      errorMsg: "The Length Of The New Password Must Be Greater Than 8"
     });
   }
 
