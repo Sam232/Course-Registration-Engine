@@ -1161,9 +1161,9 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
       return new RDates(registrationDates).save().then((rdates) => {
         if(rdates){
           return StudentPD.find({}).then((students) => {
-            console.log(students)
             if(students.length > 0){
               students.forEach((value, index) => {
+                console.log(value)
                 if(value){
                   //send sms to students
                   var message = `Dear ${value.firstName}, you can now register for your semester\'s courses on the GTUC COURSE-REG platform. Please registration start from today to ${rdates.endDate}, thank you!!`
