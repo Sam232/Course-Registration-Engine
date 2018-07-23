@@ -1218,7 +1218,7 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
           })
           .catch((err) => {
             if(err){
-              res.status(200).json({
+              res.status(404).json({
                 fetchStudentsErr: err,
               });
             }
