@@ -1,8 +1,8 @@
 module.exports = {
   SMSAPI: (Nexmo, message, mobileNumber) => {
     var nexmo = new Nexmo({
-      apiKey: process.env.NEXMON_APIKEY || "2a4a5111",
-      apiSecret: process.env.NEXMON_APISECRET || "OZDjvpWYAMLglt4l"
+      apiKey: process.env.NEXMON_API_KEY,
+      apiSecret: process.env.NEXMON_API_SECRET
     });
 
     var message = {
@@ -14,7 +14,6 @@ module.exports = {
     var sendMsg = new Promise((resolve, reject) => {
       nexmo.message.sendSms(message.from, message.to, message.message, (err, response) => {
         if(err){
-          console.log(err)
           reject(err);
         }
         else{
