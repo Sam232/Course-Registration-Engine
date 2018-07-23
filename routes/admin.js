@@ -15,6 +15,7 @@ const StudentLogin = require("../models/StudentLogin");
 const RDates = require("../models/RDates");
 const Course = require("../models/Course");
 const RCourses = require("../models/RCourses"); 
+const Payment = require("../models/Payment");
 
 const {EmailAPI} = require("../config/EmailAPI");
 const {SMSAPI} = require("../config/SMSAPI");
