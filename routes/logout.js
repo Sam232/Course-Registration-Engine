@@ -41,7 +41,7 @@ routes.post("/", verifyToken, (req, res) => {
           });
         }
         res.status(404).json({
-          message: "Logout Unsuccessful",
+          errorMsg: "Logout Unsuccessful",
           logoutState: "unsuccessful"
         });
       });
