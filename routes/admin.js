@@ -100,13 +100,13 @@ router.put("/update/admin/:id", verifyToken, (req, res) => {
     }
     res.status(404).json({
       updateState: "unsuccessful",
-      errorMsg: "Unable To Update Admin\'s PD"
+      errorMsg: "Update Unsuccessful, Try Again"
     });
   })
   .catch((err) => {
     res.status(404).json({
       err,
-      errorMsg: "Unable To Update Admin\'s PD"
+      errorMsg: "Update Unsuccessful, Try Again"
     });
   });
 });
