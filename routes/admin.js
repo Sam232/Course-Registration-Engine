@@ -307,7 +307,7 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
         })
         .catch((err) => {
           if(err){
-            return res.status(200).json({
+            return res.status(404).json({
               err,
               lecturerPD: personalDetails,
               emailSent: false
@@ -652,7 +652,7 @@ router.post("/add/finance", verifyToken, (req, res) => {
         })
         .catch((err) => {
           if(err){
-            return res.status(200).json({
+            return res.status(404).json({
               err,
               financePD: personalDetails,
               emailSent: false
@@ -980,21 +980,19 @@ router.post("/add/student", verifyToken, (req, res) => {
               });
             }
             res.status(404).json({
-              errorMessage: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+              errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
             });
           })
           .catch((err) => {
             if(err){
-              console.log(err)
               res.status(404).json({
-                errorMessage: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+                errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
               });
             }
           })
         })
         .catch((err) => {
           if(err){
-            console.log(err)
             StudentPD.findByIdAndRemove(personalDetails._id).then((removedStudentDetails) => {
               if(removedStudentDetails){
                 return res.status(404).json({
@@ -1002,13 +1000,13 @@ router.post("/add/student", verifyToken, (req, res) => {
                 });
               }
               res.status(404).json({
-                errorMessage: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+                errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
               });
             })
             .catch((err) => {
               if(err){
                 res.status(404).json({
-                  errorMessage: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+                  errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
                 });
               }
             });
