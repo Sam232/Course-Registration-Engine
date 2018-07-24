@@ -37,7 +37,7 @@ router.post("/confirm-update/", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token} target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you.`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you.`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
@@ -295,7 +295,7 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
 
     new LecturerPD(lecturerPD).save().then((personalDetails) => {
       if(personalDetails){
-        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:5000/login/${personalDetails.linkId} target=_blank>login link</a>`;
+        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:3000/login/${personalDetails.linkId} target=_blank>login link</a>`;
 
         return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
           if(sent){
@@ -600,7 +600,7 @@ router.post("/add/finance", verifyToken, (req, res) => {
 
     new FinancePD(financePD).save().then((personalDetails) => {
       if(personalDetails){
-        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:5000/login/${personalDetails.linkId} target=_blank>login link</a>`;
+        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:3000/login/${personalDetails.linkId} target=_blank>login link</a>`;
 
         return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
           if(sent){
