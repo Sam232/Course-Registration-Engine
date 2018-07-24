@@ -642,7 +642,42 @@ router.post("/add/finance", verifyToken, (req, res) => {
   });
 });
 
-//Update Finance
+//Confirm The Financial Accountant's Update
+router.post("/confirm-update/finance", verifyToken, (req, res) => {
+  var emailDetails = {
+    adminFirstName: req.body.adminFirstName,
+    financeFirstName: req.body.financeFirstName,
+    email: req.body.adminEmail,
+    loginToken: req.body.loginToken,
+    token: req.body.token
+  }
+  
+  if(!validator.validate(emailDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.financeFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/finance/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+
+  EmailAPI(Mailgun, emailDetails, message).then((sent) => {
+    if(sent){
+      return res.status(200).json({
+        emailSent: true
+      });
+    }
+  })
+  .catch((err) => {
+    if(err){
+      return res.status(404).json({
+        err,
+        emailSent: false
+      });
+    }
+  });
+});
+
+//Update Financial Accountant's Personal Details
 router.put("/update/finance/:id", verifyToken, (req, res) => {
   var financeDetails = {
     id: req.params.id,
