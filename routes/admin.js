@@ -37,7 +37,7 @@ router.post("/confirm-update/", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you.`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
