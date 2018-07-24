@@ -202,7 +202,7 @@ router.get("/view/single/lecturer/:id", verifyToken, (req, res) => {
     if(err){
       res.status(404).json({
         err,
-        errMsg: "Unable To Fetch Lecturer\'s Personal Details"
+        errorMsg: "Unable To Fetch Lecturer\'s Personal Details"
       });
     }
   });
@@ -504,7 +504,7 @@ router.get("/view/single/finance/:id", verifyToken, (req, res) => {
     if(err){
       res.status(404).json({
         err,
-        errMsg: "Unable To Fetch Financial Accountant\'s Personal Details"
+        errorMsg: "Unable To Fetch Financial Accountant\'s Personal Details"
       });
     }
   });
@@ -854,7 +854,7 @@ router.get("/view/single/student/:id", verifyToken, (req, res) => {
     if(err){
       res.status(404).json({
         err,
-        errMsg: "Unable To Fetch Student\'s Personal Details"
+        errorMsg: "Unable To Fetch Student\'s Personal Details"
       });
     }
   });
