@@ -1274,7 +1274,7 @@ router.delete("/delete/student/:id", verifyToken, (req, res) => {
               indexNumber: deletedStudent.indexNumber
             }).save().then((studentDetails) => {
               if(studentDetails){
-                return res.status(200).json({
+                return res.status(404).json({
                   errorMsg: "Unable To Delete Student\'s PD Details, Try Again",
                   deleteState: "unsuccessful"
                 });
@@ -1303,7 +1303,7 @@ router.delete("/delete/student/:id", verifyToken, (req, res) => {
                 indexNumber: deletedStudent.indexNumber
               }).save().then((studentDetails) => {
                 if(studentDetails){
-                  return res.status(200).json({
+                  return res.status(404).json({
                     errorMsg: "Unable To Delete Student\'s PD Details, Try Again",
                     deleteState: "unsuccessful"
                   });
