@@ -30,8 +30,8 @@ router.post("/confirm-update/", verifyToken, (req, res) => {
     loginToken: req.body.loginToken,
     token: req.body.token
   }
-
-  if(!validator.validate(emailDetails.adminEmail)){
+  console.log(emailDetails.email)
+  if(!validator.validate(emailDetails.email)){
     return res.status(404).json({
       errorMsg: "Valid Email Address Is Required"
     }); 
