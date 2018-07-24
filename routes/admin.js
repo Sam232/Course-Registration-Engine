@@ -855,13 +855,13 @@ router.get("/view/students", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
-      student,
+      students,
       message: "No Students Added Yet"
     });
   })
   .catch((err) => {
     if(err){
-      res.status(200).json({
+      res.status(404).json({
         err,
         errMsg: "Unable To Fetch Students Personal Details"
       });
