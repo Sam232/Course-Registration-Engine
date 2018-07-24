@@ -18,7 +18,7 @@ routes.post("/", verifyToken, (req, res) => {
       if(err){
         if(err.name == "TokenExpiredError"){
           return res.status(404).json({
-            errorMsg: "Login Session Expired, Login Again"
+            errorMsg: "Your Session Has Already Expired"
           });
         }
         if(err.message == "invalid token"){
