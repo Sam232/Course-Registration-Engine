@@ -689,18 +689,21 @@ router.put("/update/finance/:id", verifyToken, (req, res) => {
 
   if(!ObjectID.isValid(financeDetails.id)){
     return res.status(404).json({
+      financeDetails,
       errorMsg: "Invalid Financial Accountant ID Provided"
     });
   }
 
   if(!validator.validate(financeDetails.email)){
     return res.status(404).json({
+      financeDetails,
       errorMsg: "Valid Email Address Is Required"
     }); 
   }
 
   if(financeDetails.mobileNumber.length !== 10 && financeDetails.mobileNumber.substring(0, 1) !== 0){
     return res.status(404).json({
+      financeDetails,
       errorMsg: "Valid Mobile Number Is Required"
     });
   }
@@ -713,11 +716,13 @@ router.put("/update/finance/:id", verifyToken, (req, res) => {
     if(newFinance.length > 0){
       if(newFinance[0].email == financeDetails.email){
         return res.status(404).json({
+          financeDetails,
           errorMsg: "Provided Email Address Of The Financial Accountant Already Exist"
         });
       }
       else{
         return res.status(404).json({
+          financeDetails,
           errorMsg: "Provided Mobile Number Of The Financial Accountant Already Exist"
         });
       }
@@ -737,12 +742,14 @@ router.put("/update/finance/:id", verifyToken, (req, res) => {
         });
       }
       res.status(404).json({
+        financeDetails,
         errorMsg: "Unable To Update Financial Accountant\'s PD"
       });
     })
     .catch((err) => {
       res.status(404).json({
         err,
+        financeDetails,
         errorMsg: "Unable To Update Financial Accountant\'s PD"
       });
     });
@@ -750,6 +757,7 @@ router.put("/update/finance/:id", verifyToken, (req, res) => {
   .catch((err) => {
     res.status(404).json({
       err,
+      financeDetails,
       errorMsg: "Unable To Fetch The Documents Containing The Financial Accountant\'s PD"
     });
   });
