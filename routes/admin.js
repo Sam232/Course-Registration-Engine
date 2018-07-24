@@ -336,6 +336,41 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
   });
 });
 
+//Confirm The Lecturer's Update
+router.post("/confirm-update/lecturer", verifyToken, (req, res) => {
+  var emailDetails = {
+    adminFirstName: req.body.adminFirstName,
+    lecturerFirstName: req.body.lecturerFirstName,
+    email: req.body.adminEmail,
+    loginToken: req.body.loginToken,
+    token: req.body.token
+  }
+  
+  if(!validator.validate(emailDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.lecturerFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/lecturer/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+
+  EmailAPI(Mailgun, emailDetails, message).then((sent) => {
+    if(sent){
+      return res.status(200).json({
+        emailSent: true
+      });
+    }
+  })
+  .catch((err) => {
+    if(err){
+      return res.status(404).json({
+        err,
+        emailSent: false
+      });
+    }
+  });
+});
+
 //Update Lecturer
 router.put("/update/lecturer/:id", verifyToken, (req, res) => {
   var lecturerDetails = {
@@ -348,18 +383,21 @@ router.put("/update/lecturer/:id", verifyToken, (req, res) => {
 
   if(!ObjectID.isValid(lecturerDetails.id)){
     return res.status(404).json({
+      lecturerDetails,
       errorMsg: "Invalid Lecturer ID Provided"
     });
   }
 
   if(!validator.validate(lecturerDetails.email)){
     return res.status(404).json({
+      lecturerDetails,
       errorMsg: "Valid Email Address Is Required"
     }); 
   }
 
   if(lecturerDetails.mobileNumber.length !== 10 && lecturerDetails.mobileNumber.substring(0, 1) !== 0){
     return res.status(404).json({
+      lecturerDetails,
       errorMsg: "Valid Mobile Number Is Required"
     });
   }
@@ -372,11 +410,13 @@ router.put("/update/lecturer/:id", verifyToken, (req, res) => {
     if(newLecturers.length > 0){
       if(newLecturers[0].email == lecturerDetails.email){
         return res.status(404).json({
+          lecturerDetails,
           errorMsg: "Provided Email Address Of The Lecturer Already Exist"
         });
       }
       else{
         return res.status(404).json({
+          lecturerDetails,
           errorMsg: "Provided Mobile Number Of The Lecturer Already Exist"
         });
       }
