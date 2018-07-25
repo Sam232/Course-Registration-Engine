@@ -1364,6 +1364,7 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
                   var message = `Dear ${value.firstName}, you can now register for your semester\'s courses on the GTUC COURSE-REG platform. Please registration start from today to ${rdates.endDate}, thank you!!`;
                   return SMSAPI(Twilio, message, "+233"+value.mobileNumber).then((res) => {
                     if(res){
+                      console.log(res)
                       return null;
                     }
                   })
