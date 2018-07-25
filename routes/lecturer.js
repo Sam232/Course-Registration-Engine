@@ -12,6 +12,61 @@ const RCourses = require("../models/RCourses");
 const {SMSAPI} = require("../config/SMSAPI");
 const {verifyToken} = require("../config/verifyToken");
 
+//Welcome Page Details
+router.get("/welcome/:id", verifyToken, (req, res) => {
+  var lecturerId = req.params.id;
+  if(!ObjectID.isValid(lecturerId)){
+    return res.status(404).json({
+      errorMsg: "Invalid Lecturer ID Provided"
+    });
+  }
+
+  var sgcNumber = {};
+  Grade.count({
+    lecturerId 
+  }).then((gradesNumber) => {
+    sgcNumber.grades = gradesNumber || 0;
+
+    Course.count({
+      lecturerId
+    }).then((courseNumber) => {
+      sgcNumber.courses = courseNumber || 0;
+
+      RCourses.count({
+        lecturerId
+      }).then((rcoursesNumber) => {
+        sgcNumber.rcourses = rcoursesNumber || 0;
+        res.status(200).json({
+          queryState: "successful",
+          sgcNumber
+        });
+      })
+      .catch((err) => {
+        res.status(404).json({
+          err,
+          errorMsg: "Unable To Fetch The Students Who Have Registered For Your Courses"
+        });
+      });
+    })
+    .catch((err) => {
+      if(err){
+        res.status(404).json({
+          err,
+          errorMsg: "Unable To Fetch The Courses You\'ve Added"
+        });
+      }
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch The Grades You\'ve Added"
+      });
+    }
+  });
+});
+
 //CRUD COURSES
 //Add Course
 router.post("/add/course/:lecturerId", verifyToken, (req, res) => {
