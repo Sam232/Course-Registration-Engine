@@ -1,9 +1,9 @@
 module.exports = {
-  SMSAPI: (Nexmo, message, mobileNumber) => {
-    var nexmo = new Nexmo({
-      apiKey: process.env.NEXMO_API_KEY,
-      apiSecret: process.env.NEXMO_API_SECRET
-    });
+  SMSAPI: (Twilio, message, mobileNumber) => {
+    var accountSid = process.env.TWILIO_ACCOUNTSID;
+    var authToken = process.env.TWILIO_AUTHTOKEN;
+
+    var client = new Twilio(accountSid, authToken);
 
     var message = {
       from: "GTUC COURSE-REG",
@@ -12,14 +12,17 @@ module.exports = {
     };
 
     var sendMsg = new Promise((resolve, reject) => {
-      nexmo.message.sendSms(message.from, message.to, message.message, (err, response) => {
-        if(err){
-          reject(err);
-        }
-        else{
-          resolve(true);
-        }
+      client.messages.create({
+        body: from+"- "+message.message,
+        to: message.to,
+        from: process.env.TWILIO_PHONENUMBER
+      }).then((response) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
       });
+      
     });
     return sendMsg;
   }

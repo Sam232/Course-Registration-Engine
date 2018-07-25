@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const generatePassword = require("generate-password");
 const Mailgun = require("mailgun-js");
 const {ObjectID} = require("mongodb");
-const Nexmo = require("nexmo");
+const Twilio = require("twilio");
 const uuid = require("uuid/v4");
 
 const AdminPD = require("../models/AdminPD");
@@ -1220,7 +1220,6 @@ router.put("/update/student-login/", verifyToken, (req, res) => {
       })
       .catch((err) => {
         if(err){
-          console.log(err)
           res.status(404).json({
             errorMsg: "An Error Occurred, Try Again"
           });
@@ -1363,7 +1362,7 @@ router.post("/add/registration-dates", verifyToken, (req, res) => {
                 if(value){
                   //send sms to students
                   var message = `Dear ${value.firstName}, you can now register for your semester\'s courses on the GTUC COURSE-REG platform. Please registration start from today to ${rdates.endDate}, thank you!!`;
-                  return SMSAPI(Nexmo, message, "+233"+value.mobileNumber).then((res) => {
+                  return SMSAPI(Twilio, message, "+233"+value.mobileNumber).then((res) => {
                     if(res){
                       return null;
                     }

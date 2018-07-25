@@ -21,7 +21,7 @@
     "mailgun-js": "^0.18.0",
     "mongodb": "^3.0.10",
     "mongoose": "^5.1.4",
-    "nexmo": "^2.2.0",
+    "twilio": "^3.18.0",
     "uuid": "^3.3.2"
   },
   "engines": {

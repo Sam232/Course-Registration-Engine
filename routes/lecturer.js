@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {ObjectID} = require("mongodb");
-const Nexmo = require("nexmo");
+const Twilio = require("twilio");
 
 const Course = require("../models/Course");
 const SCourse = require("../models/SCourse");
@@ -634,7 +634,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
             }).then((student) => {
               if(student){
                 var message = `Dear ${student.firstName}, your exam grade for ${addedGrade.courseName} has been uploaded to the GTUC COURSE-REG platform. Please login to view your Grade.`;
-                return SMSAPI(Nexmo, message, "+233"+student.mobileNumber).then((res) => {
+                return SMSAPI(Twilio, message, "+233"+student.mobileNumber).then((res) => {
                   if(res){
                     return res.status(200).json({
                       addedGrade,
