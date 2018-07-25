@@ -565,7 +565,7 @@ router.get("/view/saved/courses/:lecturerId", verifyToken, (req, res) => {
             queryState: "successful"
           });
         }
-        res.status(404).json({
+        res.status(200).json({
           savedCourse,
           queryState: "successful"
         });
