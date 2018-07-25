@@ -602,7 +602,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
               indexNumber: gradeDetails.indexNumber
             }).then((student) => {
               if(student){
-                var message = `Dear ${student.firstName}, your grades for all the courses you were examined on in last semester has been uploaded to the GTUC COURSE-REG platform. Please login to view them.`;
+                var message = `Dear ${student.firstName}, your exam grade for ${addedGrade.courseName} has been uploaded to the GTUC COURSE-REG platform. Please login to view your Grade.`;
                 return SMSAPI(Nexmo, message, "+233"+student.mobileNumber).then((res) => {
                   if(res){
                     return res.status(200).json({
