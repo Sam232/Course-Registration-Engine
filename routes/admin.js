@@ -16,6 +16,8 @@ const RDates = require("../models/RDates");
 const Course = require("../models/Course");
 const RCourses = require("../models/RCourses"); 
 const Payment = require("../models/Payment");
+const SCourse = require("../models/SCourse");
+const Grade = require("../models/Grade");
 
 const {EmailAPI} = require("../config/EmailAPI");
 const {SMSAPI} = require("../config/SMSAPI");
@@ -468,8 +470,78 @@ router.delete("/delete/lecturer/:id", verifyToken, (req, res) => {
     if(lecturer){
       return LecturerPD.findByIdAndRemove(lecturerId).then((deletedLecturer) => {
         if(deletedLecturer){
-          return res.status(200).json({
-            deletedLecturer
+          return SCourse.find({
+            lecturerId
+          }).then((savedCourses) => {
+            if(savedCourses){
+              return SCourse.remove({
+                lecturerId
+              }).then((deletedSavedCourses) => {
+                if(deletedSavedCourses){
+                  return Grade.find({
+                    lecturerId
+                  }).then((grades) => {
+                    if(grades){
+                      return Grade.remove({
+                        lecturerId
+                      }).then((deletedGrades) => {
+                        if(deletedGrades){
+                          return res.status(200).json({
+                            deletedLecturer
+                          });
+                        }
+                        res.status(200).json({
+                          deletedLecturer,
+                          msg: "The Lecturer Was Removed But An Error While Deleting The Grades The Lecturer Added"
+                        });
+                      })
+                      .catch((err) => {
+                        if(err){
+                          res.status(404).json({
+                            deletedLecturer,
+                            errorMsg: "The Lecturer Was Removed But An Error While Deleting The Grades The Lecturer Added"
+                          });
+                        }
+                      });
+                    }
+                    res.status(200).json({
+                      deletedLecturer
+                    });
+                  })
+                  .catch((err) => {
+                    if(err){
+                      res.status(404).json({
+                        deletedLecturer,
+                        errorMsg: "The Lecturer Was Removed But An Error Occured While Checking Whether The Lecturer Added Some Grades"
+                      });
+                    }
+                  });
+                }
+                res.status(200).json({
+                  deletedLecturer,
+                  msg: "The Lecturer Was Removed But An Error Occured While Deleting The Courses The Lecturer Saved"
+                });
+              })
+              .catch((err) => {
+                if(err){
+                  res.status(404).json({
+                    deletedLecturer,
+                    errorMsg: "The Lecturer Was Removed But An Error Occured While Deleting The Courses The Lecturer Saved"
+                  });
+                }
+              });
+            }
+            res.status(200).json({
+              deletedLecturer
+            });
+          })
+          .catch((err) => {
+            if(err){
+              res.status(404).json({
+                deletedLecturer,
+                errorMsg: "The Lecturer Was Removed But An Error Occured While Checking Whether The Lecturer Saved Some Courses"
+              });
+            }
           });
         }
         res.status(404).json({
@@ -817,8 +889,37 @@ router.delete("/delete/finance/:id", verifyToken, (req, res) => {
     if(finance){
       return FinancePD.findByIdAndRemove(financeId).then((deletedFinance) => {
         if(deletedFinance){
-          return res.status(200).json({
-            deletedFinance
+          return Payment.find({
+            financeId
+          }).then((payments) => {
+            if(payments){
+              return Payment.remove({
+                financeId
+              }).then((deletedPayments) => {
+                if(deletedPayments){
+                  return res.status(200).json({
+                    deletedFinance
+                  });
+                }
+              })
+              .catch((err) => {
+                if(err){
+                  res.status(404).json({
+                    errorMsg: "Financial Accountant Was Deleted But The Payments Enabled Were Not"
+                  });
+                }
+              })
+            }
+            res.status(200).json({
+              deletedFinance
+            });
+          })
+          .catch((err) => {
+            if(err){
+              res.status(404).json({
+                errorMsg: "Financial Accountant Was Deleted But The Payments Enabled Were Not"
+              });
+            }
           });
         }
         res.status(404).json({
@@ -834,6 +935,10 @@ router.delete("/delete/finance/:id", verifyToken, (req, res) => {
         }
       });
     }
+    res.status(200).json({
+      err,
+      errorMsg: "Unable To Delete Financial Accountant\'s Details"
+    });
   })
   .catch((err) => {
     if(err){
