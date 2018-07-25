@@ -5,16 +5,10 @@ module.exports = {
 
     var client = new Twilio(accountSid, authToken);
 
-    var message = {
-      from: "GTUC COURSE-REG",
-      to: mobileNumber,
-      message
-    };
-
     var sendMsg = new Promise((resolve, reject) => {
       client.messages.create({
-        body: from+"- "+message.message,
-        to: message.to,
+        body: "GTUC COURSE-REG- "+message,
+        to: mobileNumber,
         from: process.env.TWILIO_PHONENUMBER
       }).then((response) => {
         resolve(true);
