@@ -229,6 +229,37 @@ router.post("/add/course/:lecturerId", verifyToken, (req, res) => {
   });
 });
 
+//Get One Course
+router.get("/view/single/course/:id", verifyToken, (req, res) => {
+  var courseId = req.params.id;
+  if(!ObjectID.isValid(courseId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  Course.findById(courseId).then((courseDetails) => {
+    if(courseDetails){
+      return res.status(200).json({
+        courseDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "No Course\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch The Course\'s Details"
+      });
+    }
+  });
+});
+
 //View Lecturer's Courses
 router.get("/view/course/:lecturerId", verifyToken, (req, res) => {
   var lecturerId = req.params.lecturerId;
@@ -668,6 +699,37 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
     if(err){
       res.status(404).json({
         errorMsg: "An Error Occured, Try Again"
+      });
+    }
+  });
+});
+
+//Get One Grade
+router.get("/view/single/grade/:id", verifyToken, (req, res) => {
+  var gradeId = req.params.id;
+  if(!ObjectID.isValid(gradeId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  Grade.findById(gradeId).then((gradeDetails) => {
+    if(gradeDetails){
+      return res.status(200).json({
+        gradeDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "No Grade\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch The Grade\'s Details"
       });
     }
   });
