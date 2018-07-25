@@ -170,28 +170,48 @@ router.post("/add/course/:lecturerId", verifyToken, (req, res) => {
 
         new Course(newCourse).save().then((courseDetails) => {
           if(courseDetails){
-            return new SCourse(newCourse).save().then((scourseDetails) => {
-              if(scourseDetails){
+            return SCourse.findOne({
+              code: courseDetails.code,
+              name: courseDetails.name
+            }).then((savedCourse) => {
+              if(savedCourse){
                 return res.status(200).json({
                   courseDetails,
                   addState: "successful"
                 });
               }
-              res.status(200).json({
-                courseDetails,
-                addState: "successful",
-                msg: "Unable To Course Save. Delete And Add Again"
-              });
+              new SCourse(newCourse).save().then((scourseDetails) => {
+                if(scourseDetails){
+                  return res.status(200).json({
+                    courseDetails,
+                    addState: "successful"
+                  });
+                }
+                res.status(200).json({
+                  courseDetails,
+                  addState: "successful",
+                  msg: "Unable To Course Save. Delete And Add Again"
+                });
+              })
+              .catch((err) => {
+                if(err){
+                  res.status(404).json({
+                    err,
+                    errorMsg: "Unable To Course Save. Delete And Add Again",
+                    addState: "unsuccessful"
+                  });
+                }
+              }); 
             })
             .catch((err) => {
               if(err){
                 res.status(404).json({
                   err,
-                  errorMsg: "Unable To Course Save. Delete And Add Again",
+                  errorMsg: "An Error Occured. Delete Added Course And Add Again",
                   addState: "unsuccessful"
                 });
               }
-            });
+            });               
           }
           res.status(404).json({
             errorMsg: "Unable To Add New Course, Try Again",
