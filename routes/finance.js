@@ -43,8 +43,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
     financeId: req.params.financeId,
     indexNumber: req.body.indexNumber,
     level: req.body.level,
-    semester: req.body.semester,
-    paid: req.body.paid
+    semester: req.body.semester
   };
 
   if(!ObjectID.isValid(paymentDetails.financeId)){

@@ -17,7 +17,7 @@ var PaymentSchema = new Schema({
   },
   paid: {
     type: Boolean,
-    required: true
+    default: "Paid"
   },
   financeId: {
     type: Schema.Types.ObjectId,
