@@ -113,6 +113,37 @@ router.put("/update/admin/:id", verifyToken, (req, res) => {
   });
 });
 
+//Get Admin
+router.get("/view/admin/:id", verifyToken, (req, res) => {
+  var adminId = req.params.id;
+  if(!ObjectID.isValid(adminId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  AdminPD.findById(adminId).then((personalDetails) => {
+    if(personalDetails){
+      return res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "Admin\'s ID Does Not Match The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch Admin\'s Personal Details"
+      });
+    }
+  });
+});
+
 //Welcome Page Details
 router.get("/welcome", verifyToken, (req, res) => {
   var usersNumber = {};

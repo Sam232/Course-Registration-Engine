@@ -67,6 +67,37 @@ router.get("/welcome/:id", verifyToken, (req, res) => {
   });
 });
 
+//Get One Lecturer
+router.get("/view/lecturer/:id", verifyToken, (req, res) => {
+  var lecturerId = req.params.id;
+  if(!ObjectID.isValid(lecturerId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  LecturerPD.findById(lecturerId).then((personalDetails) => {
+    if(personalDetails){
+      return res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "No Lecturer\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch Lecturer\'s Personal Details"
+      });
+    }
+  });
+});
+
 //CRUD COURSES
 //Add Course
 router.post("/add/course/:lecturerId", verifyToken, (req, res) => {

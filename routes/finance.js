@@ -6,6 +6,37 @@ const Payment = require("../models/Payment");
 
 const {verifyToken} = require("../config/verifyToken");
 
+//Get One Finance
+router.get("/view/finance/:id", verifyToken, (req, res) => {
+  var financeId = req.params.id;
+  if(!ObjectID.isValid(financeId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  FinancePD.findById(financeId).then((personalDetails) => {
+    if(personalDetails){
+      return res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "No Financial Accountant\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch Financial Accountant\'s Personal Details"
+      });
+    }
+  });
+});
+
 //Add Payment
 router.post("/add/payment/:financeId", verifyToken, (req, res) => {
   var paymentDetails = {
