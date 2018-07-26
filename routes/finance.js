@@ -124,13 +124,13 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
       return Payment.find({}).then((payments) => {
         if(payments.length > 0){
           var financePayment = {
-            allEnabledPayments: payments.length,
+            allEnabledPayments: payments,
             myEnabledPayment: null
           };
 
           myEnabledPayment = payments.filter(payment =>  payment._id === financeId);
           if(myEnabledPayment.length > 0){  
-            financePayment.myEnabledPayment = myEnabledPayment.length
+            financePayment.myEnabledPayment = myEnabledPayment
           }          
           return res.status(200).json({
             financePayment,
