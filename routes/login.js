@@ -24,6 +24,7 @@ router.get("/verify/:linkId", (req, res) => {
     linkId
   }).then((result) => {
     if(result){
+      console.log(result)
       return res.status(200).json({
         verifyState: "Correct LinkId"
       });
