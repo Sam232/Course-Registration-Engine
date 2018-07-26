@@ -37,6 +37,37 @@ router.get("/view/finance/:id", verifyToken, (req, res) => {
   });
 });
 
+//Get One Student
+router.get("/view/single/student/:id", verifyToken, (req, res) => {
+  var studentId = req.params.id;
+  if(!ObjectID.isValid(studentId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  StudentPD.findById(studentId).then((personalDetails) => {
+    if(personalDetails){
+      return res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "No Student\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch Student\'s Personal Details"
+      });
+    }
+  });
+});
+
 //Add Payment
 router.post("/add/payment/:financeId", verifyToken, (req, res) => {
   var paymentDetails = {
