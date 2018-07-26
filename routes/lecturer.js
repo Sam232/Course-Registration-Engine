@@ -98,6 +98,95 @@ router.get("/view/lecturer/:id", verifyToken, (req, res) => {
   });
 });
 
+//Confirm Lecturer's Update
+router.post("/confirm-update", verifyToken, (req, res) => {
+  var emailDetails = {
+    firstName: req.body.lecturerFirstName,
+    email: req.body.lecturerEmail,
+    loginToken: req.body.loginToken,
+    token: req.body.token
+  }
+  
+  if(!validator.validate(emailDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  var message = `Dear ${emailDetails.firstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/lecturer/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+
+  EmailAPI(Mailgun, emailDetails, message).then((sent) => {
+    if(sent){
+      return res.status(200).json({
+        emailSent: true
+      });
+    }
+  })
+  .catch((err) => {
+    if(err){
+      return res.status(404).json({
+        err,
+        emailSent: false
+      });
+    }
+  });
+});
+
+//Update Lecturer
+router.put("/update/lecturer/:id", verifyToken, (req, res) => {
+  var lecturerDetails = {
+    id: req.params.id,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    mobileNumber: req.body.mobileNumber
+  };
+
+  if(!ObjectID.isValid(lecturerDetails.id)){
+    return res.status(404).json({
+      errorMsg: "Invalid Lecturer ID Provided"
+    });
+  }
+
+  if(!validator.validate(lecturerDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  if(lecturerDetails.mobileNumber.length !== 10 && lecturerDetails.mobileNumber.substring(0, 1) !== 0){
+    return res.status(404).json({
+      errorMsg: "Valid Mobile Number Is Required"
+    });
+  }
+
+  LecturerPD.findByIdAndUpdate(lecturerDetails.id, {
+    $set: {
+      firstName: lecturerDetails.firstName,
+      lastName: lecturerDetails.lastName,
+      email: lecturerDetails.email,
+      mobileNumber: lecturerDetails.mobileNumber
+    }
+  }, {new: true}).then((updatedDetails) => {
+    if(updatedDetails){
+      return res.status(200).json({
+        LecturerPD: updatedDetails,
+        updateState: "successful"
+      });
+    }
+    res.status(404).json({
+      updateState: "unsuccessful",
+      errorMsg: "Update Unsuccessful, Try Again"
+    });
+  })
+  .catch((err) => {
+    res.status(404).json({
+      err,
+      errorMsg: "Update Unsuccessful, Try Again"
+    });
+  });
+});
+
 //CRUD COURSES
 //Add Course
 router.post("/add/course/:lecturerId", verifyToken, (req, res) => {
