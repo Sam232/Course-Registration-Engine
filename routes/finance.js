@@ -121,17 +121,24 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
 
   FinancePD.findById(financeId).then((financeDetails) => {
     if(financeDetails){
-      return Payment.find({
-        financeId
-      }).then((payments) => {
+      return Payment.find({}).then((payments) => {
         if(payments.length > 0){
+          var financePayment = {
+            allEnabledPayments: payments.length,
+            myEnabledPayment: null
+          };
+
+          myEnabledPayment = payments.filter(payment =>  payment._id === financeId);
+          if(myEnabledPayment.length > 0){  
+            financePayment.myEnabledPayment = myEnabledPayment.length
+          }          
           return res.status(200).json({
-            payments,
+            financePayment,
             queryState: "successful"
           });
         }
         res.status(200).json({
-          payments: [],
+          financePayment: [],
           queryState: "successful",
           msg: "No Payments Enabled"
         });
