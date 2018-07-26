@@ -104,7 +104,7 @@ router.get("/view/lecturer/:id", verifyToken, (req, res) => {
 //Confirm Lecturer's Update
 router.post("/confirm-update", verifyToken, (req, res) => {
   var emailDetails = {
-    firstName: req.body.lecturerFirstName,
+    firstName: req.body.firstName,
     email: req.body.lecturerEmail,
     loginToken: req.body.loginToken,
     token: req.body.token
