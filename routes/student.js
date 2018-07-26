@@ -12,7 +12,7 @@ const RDates = require("../models/RDates");
 const {verifyStudentToken} = require("../config/verifyToken");
 
 //Get One Student
-router.get("/view/student/:id", verifyToken, (req, res) => {
+router.get("/view/student/:id", verifyStudentToken, (req, res) => {
   var studentId = req.params.id;
   if(!ObjectID.isValid(studentId)){
     return res.status(404).json({
