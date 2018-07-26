@@ -38,15 +38,12 @@ router.get("/view/finance/:id", verifyToken, (req, res) => {
 });
 
 //Get One Student
-router.get("/view/single/student/:id", verifyToken, (req, res) => {
-  var studentId = req.params.id;
-  if(!ObjectID.isValid(studentId)){
-    return res.status(404).json({
-      errorMsg: "Provided ID Is Invalid."
-    });
-  }
+router.get("/view/single/student/:indexNumber", verifyToken, (req, res) => {
+  var studentIndexNumber = req.params.indexNumber;
 
-  StudentPD.findById(studentId).then((personalDetails) => {
+  StudentPD.findOne({
+    indexNumber: studentIndexNumber
+  }).then((personalDetails) => {
     if(personalDetails){
       return res.status(200).json({
         personalDetails,
@@ -54,7 +51,7 @@ router.get("/view/single/student/:id", verifyToken, (req, res) => {
       });
     }
     res.status(200).json({
-      msg: "No Student\'s ID Matches The Provided ID",
+      msg: "No Student\'s Index Number Matches The Provided Index Number",
       queryState: "unsuccessful"
     });
   })
@@ -103,7 +100,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
             });
           }
           res.status(200).json({
-            errorMsg: "Unable To Add New Payment",
+            msg: "Unable To Add New Payment",
             addState: "unsuccessful"
           });          
         })
