@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {ObjectID} = require("mongodb");
 
 const FinancePD = require("../models/FinancePD");
+const StudentPD = require("../models/StudentPD");
 const Payment = require("../models/Payment");
 
 const {verifyToken} = require("../config/verifyToken");
