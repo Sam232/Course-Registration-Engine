@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {ObjectID} = require("mongodb");
 const Twilio = require("twilio");
+const Mailgun = require("mailgun-js");
 const validator = require("email-validator"); 
 
 const Course = require("../models/Course");
