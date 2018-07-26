@@ -373,7 +373,6 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
 router.post("/confirm-update/lecturer", verifyToken, (req, res) => {
   var emailDetails = {
     adminFirstName: req.body.adminFirstName,
-    linkId: req.body.linkId,
     lecturerFirstName: req.body.lecturerFirstName,
     email: req.body.adminEmail,
     loginToken: req.body.loginToken,
@@ -386,7 +385,7 @@ router.post("/confirm-update/lecturer", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.lecturerFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/${emailDetails.linkId}/confirm-update/lecturer/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.lecturerFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/lecturer/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
@@ -790,7 +789,6 @@ router.post("/add/finance", verifyToken, (req, res) => {
 router.post("/confirm-update/finance", verifyToken, (req, res) => {
   var emailDetails = {
     adminFirstName: req.body.adminFirstName,
-    linkId: req.body.linkId,
     financeFirstName: req.body.financeFirstName,
     email: req.body.adminEmail,
     loginToken: req.body.loginToken,
@@ -803,7 +801,7 @@ router.post("/confirm-update/finance", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.financeFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/${emailDetails.linkId}/confirm-update/finance/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.financeFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/finance/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
