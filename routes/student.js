@@ -11,6 +11,37 @@ const RDates = require("../models/RDates");
 
 const {verifyStudentToken} = require("../config/verifyToken");
 
+//Get One Student
+router.get("/view/student/:id", verifyToken, (req, res) => {
+  var studentId = req.params.id;
+  if(!ObjectID.isValid(studentId)){
+    return res.status(404).json({
+      errorMsg: "Provided ID Is Invalid."
+    });
+  }
+
+  StudentPD.findById(studentId).then((personalDetails) => {
+    if(personalDetails){
+      return res.status(200).json({
+        personalDetails,
+        queryState: "successful"
+      });
+    }
+    res.status(200).json({
+      msg: "No Student\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "Unable To Fetch Student\'s Personal Details"
+      });
+    }
+  });
+});
+
 //View Grade
 router.get("/view/grade/:studentId/:indexNumber/:level/:semester", verifyStudentToken, (req, res) => {
   var studentDetails = {
