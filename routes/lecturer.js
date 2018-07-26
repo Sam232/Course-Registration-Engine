@@ -10,6 +10,7 @@ const LecturerPD = require("../models/LecturerPD");
 const StudentPD = require("../models/StudentPD");
 const RCourses = require("../models/RCourses");
 
+const {EmailAPI} = require("../config/EmailAPI");
 const {SMSAPI} = require("../config/SMSAPI");
 const {verifyToken} = require("../config/verifyToken");
 
