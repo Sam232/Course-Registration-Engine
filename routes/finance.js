@@ -125,12 +125,12 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
         if(payments.length > 0){
           var financePayment = {
             allEnabledPayments: payments,
-            myEnabledPayment: null
+            myEnabledPayments: []
           };
 
-          myEnabledPayment = payments.filter(payment =>  payment._id === financeId);
-          if(myEnabledPayment.length > 0){  
-            financePayment.myEnabledPayment = myEnabledPayment
+          var myEnabledPayments = payments.filter(payment =>  payment._id === financeId);
+          if(myEnabledPayments.length > 0){  
+            financePayment.myEnabledPayments = myEnabledPayments;
           }          
           return res.status(200).json({
             financePayment,
@@ -138,7 +138,10 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
           });
         }
         res.status(200).json({
-          financePayment: [],
+          financePayment: {
+            allEnabledPayments: [],
+            myEnabledPayments: []
+          },
           queryState: "successful",
           msg: "No Payments Enabled"
         });
