@@ -203,8 +203,7 @@ router.put("/update/payment/:paymentId", verifyToken, (req, res) => {
     paymentId: req.params.paymentId,
     indexNumber: req.body.indexNumber,
     level: req.body.level,
-    semester: req.body.semester,
-    paid: req.body.paid
+    semester: req.body.semester
   };
 
   if(!ObjectID.isValid(paymentDetails.paymentId)){
