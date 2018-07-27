@@ -135,7 +135,7 @@ router.post("/confirm-update", verifyToken, (req, res) => {
   });
 });
 
-//Update Lecturer
+//Update Lecturer's Details
 router.put("/update/lecturer/:id", verifyToken, (req, res) => {
   var lecturerDetails = {
     id: req.params.id,

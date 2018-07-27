@@ -5,6 +5,8 @@ const FinancePD = require("../models/FinancePD");
 const StudentPD = require("../models/StudentPD");
 const Payment = require("../models/Payment");
 
+const {EmailAPI} = require("../config/EmailAPI");
+
 const {verifyToken} = require("../config/verifyToken");
 
 //Get One Finance
@@ -63,6 +65,95 @@ router.get("/view/single/student/:indexNumber", verifyToken, (req, res) => {
         errorMsg: "Unable To Fetch Student\'s Personal Details"
       });
     }
+  });
+});
+
+//Confirm Financial Accountant's Update
+router.post("/confirm-update", verifyToken, (req, res) => {
+  var emailDetails = {
+    firstName: req.body.firstName,
+    email: req.body.FinanceEmail,
+    loginToken: req.body.loginToken,
+    token: req.body.token
+  }
+  
+  if(!validator.validate(emailDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  var message = `Dear ${emailDetails.firstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/finance/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+
+  EmailAPI(Mailgun, emailDetails, message).then((sent) => {
+    if(sent){
+      return res.status(200).json({
+        emailSent: true
+      });
+    }
+  })
+  .catch((err) => {
+    if(err){
+      return res.status(404).json({
+        err,
+        emailSent: false
+      });
+    }
+  });
+});
+
+//Update Financial Accountant's Personal Details
+router.put("/update/finance/:id", verifyToken, (req, res) => {
+  var financeDetails = {
+    id: req.params.id,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    mobileNumber: req.body.mobileNumber
+  };
+
+  if(!ObjectID.isValid(financeDetails.id)){
+    return res.status(404).json({
+      errorMsg: "Invalid Financial Accountant\'s ID Provided"
+    });
+  }
+
+  if(!validator.validate(financeDetails.email)){
+    return res.status(404).json({
+      errorMsg: "Valid Email Address Is Required"
+    }); 
+  }
+
+  if(financeDetails.mobileNumber.length !== 10 && financeDetails.mobileNumber.substring(0, 1) !== 0){
+    return res.status(404).json({
+      errorMsg: "Valid Mobile Number Is Required"
+    });
+  }
+
+  FinancePD.findByIdAndUpdate(financeDetails.id, {
+    $set: {
+      firstName: financeDetails.firstName,
+      lastName: financeDetails.lastName,
+      email: financeDetails.email,
+      mobileNumber: financeDetails.mobileNumber
+    }
+  }, {new: true}).then((updatedDetails) => {
+    if(updatedDetails){
+      return res.status(200).json({
+        FinancePD: updatedDetails,
+        updateState: "successful"
+      });
+    }
+    res.status(404).json({
+      updateState: "unsuccessful",
+      errorMsg: "Update Unsuccessful, Try Again"
+    });
+  })
+  .catch((err) => {
+    res.status(404).json({
+      err,
+      errorMsg: "Update Unsuccessful, Try Again"
+    });
   });
 });
 
