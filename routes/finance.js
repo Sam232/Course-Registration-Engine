@@ -239,7 +239,7 @@ router.put("/update/payment/:paymentId", verifyToken, (req, res) => {
                   updateState: "successful"
                 });
               }
-              res.status(404).json({
+              res.status(200).json({
                 updateState: "unsuccessful"
               });
             })
@@ -267,7 +267,7 @@ router.put("/update/payment/:paymentId", verifyToken, (req, res) => {
               updateState: "successful"
             });
           }
-          res.status(404).json({
+          res.status(200).json({
             updateState: "unsuccessful"
           });
         })
