@@ -59,7 +59,7 @@ router.get("/welcome/:id", verifyStudentToken, (req, res) => {
 
         res.status(200).json({
           scrcNumber,
-          queryState: "unsuccessful"
+          queryState: "successful"
         });
       })
       .catch((err) => {

@@ -1095,7 +1095,7 @@ router.post("/add/student", verifyToken, (req, res) => {
 
           new StudentLogin(loginDetails).save().then((studentLoginDetails) => {
             if(studentLoginDetails){
-              var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, your new password is <b>${password}</b>. You can login to the application using this link <a href=http://localhost:5000/student/login target=_blank>login link</a>`;
+              var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, your new password is <b>${password}</b>. You can login to the application using this link <a href=http://localhost:3000/login target=_blank>login link</a>`;
 
               return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
                 if(sent){
