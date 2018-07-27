@@ -88,7 +88,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
       }).then((existingPayment) => {
         if(existingPayment){
           return res.status(404).json({
-            errorMsg: "Payment Has Been Already Made"
+            errorMsg: "A Payment Has Been Already Made For A Student With This Index Number"
           });
         }
         new Payment(paymentDetails).save().then((newPayment) => {
