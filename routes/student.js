@@ -11,6 +11,81 @@ const RDates = require("../models/RDates");
 
 const {verifyStudentToken} = require("../config/verifyToken");
 
+//Welcome Page Details
+router.get("/welcome/:id", verifyStudentToken, (req, res) => {
+  var studentId = req.params.id;
+  if(!ObjectID.isValid(studentId)){
+    return res.status(404).json({
+      errorMsg: "Invalid Student ID Provided"
+    });
+  }
+
+  StudentPD.findById(studentId).then((studentDetails) => {
+    if(studentDetails){
+      return Course.find({}).then((courses) => {
+        var scrcNumber = {
+          semesterCourses: null,
+          registeredCourses: null
+        };
+        if(courses){
+          scrcNumber.semesterCourses = courses;
+          return RCourses.find({
+            indexNumber: studentDetails.indexNumber
+          }).then((registeredCourses) => {
+            if(registeredCourses){
+              scrcNumber.registeredCourses = registeredCourses;
+              return res.status(200).json({
+                scrcNumber,
+                queryState: "successful"
+              });
+            }
+            scrcNumber.registeredCourses = [];
+            res.status(200).json({
+              scrcNumber,
+              queryState: "successful"
+            });
+          })
+          .catch((err) => {
+            if(err){
+              res.status(404).json({
+                err,
+                errorMsg: "Unable To Fetch Your Registered Courses, Refresh Page To Try Again"
+              });
+            }
+          });
+        }
+        scrcNumber.semesterCourses = [];
+        scrcNumber.registeredCourses = [];
+
+        res.status(200).json({
+          scrcNumber,
+          queryState: "unsuccessful"
+        });
+      })
+      .catch((err) => {
+        if(err){
+          res.status(404).json({
+            err,
+            errorMsg: "Unable To Fetch Semester Courses, Refresh Page To Try Again"
+          });
+        }
+      })
+    }
+    res.status(404).json({
+      err,
+      errorMsg: "No Student\'s ID Matches The Provided ID"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "An Error Occured, Refresh Page To Try Again"
+      });
+    }
+  });
+});
+
 //Get One Student
 router.get("/view/student/:id", verifyStudentToken, (req, res) => {
   var studentId = req.params.id;
