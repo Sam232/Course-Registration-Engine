@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const {ObjectID} = require("mongodb");
+const validator = require("email-validator"); 
 
 const FinancePD = require("../models/FinancePD");
 const StudentPD = require("../models/StudentPD");
