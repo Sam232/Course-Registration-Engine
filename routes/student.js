@@ -24,11 +24,11 @@ router.get("/welcome/:id", verifyStudentToken, (req, res) => {
     if(studentDetails){
       return Course.find({}).then((courses) => {
         var scrcNumber = {
-          semesterCourses: null,
+          allSemestersCourses: null,
           registeredCourses: null
         };
         if(courses){
-          scrcNumber.semesterCourses = courses;
+          scrcNumber.allSemestersCourses = courses;
           return RCourses.find({
             indexNumber: studentDetails.indexNumber
           }).then((registeredCourses) => {
@@ -54,7 +54,7 @@ router.get("/welcome/:id", verifyStudentToken, (req, res) => {
             }
           });
         }
-        scrcNumber.semesterCourses = [];
+        scrcNumber.allSemestersCourses = [];
         scrcNumber.registeredCourses = [];
 
         res.status(200).json({
