@@ -478,13 +478,13 @@ router.put("/update/course/:courseId", verifyToken, (req, res) => {
           if(existingCourses.length > 0){
             if(existingCourses[0].code == courseDetails.code){
               return res.status(404).json({
-                errorMsg: "Course Code Already Exist",
+                errorMsg: "This Course Code Has Been Used As The Code For A Different Course",
                 updateState: "unsuccessful"
               });
             }
             else{
               return res.status(404).json({
-                errorMsg: "Course Name Already Exist",
+                errorMsg: "This Course Name Has Been Used As The Name For A Different Course",
                 updateState: "unsuccessful"
               });
             } 
