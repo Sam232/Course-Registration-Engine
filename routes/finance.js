@@ -157,6 +157,7 @@ router.get("/view/payments/:financeId", verifyToken, (req, res) => {
           };
 
           var myEnabledPayments = payments.filter(payment => payment.financeId === financeId);
+          console.log(myEnabledPayments)
           if(myEnabledPayments.length > 0){  
             financePayment.myEnabledPayments = myEnabledPayments;
           }          
