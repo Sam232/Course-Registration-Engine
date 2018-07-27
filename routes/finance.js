@@ -303,4 +303,49 @@ router.put("/update/payment/:paymentId", verifyToken, (req, res) => {
   });
 });
 
+//Delete Payment
+router.delete("/delete/payment/:paymentId", verifyToken, (req, res) => {
+  var paymentId = req.params.paymentId;
+
+  if(!ObjectID.isValid(paymentId)){
+    return res.status(404).json({
+      errorMsg: "An Invalid Payment ID Provided"
+    });
+  }
+
+  Payment.findById(paymentId).then((paymentDetails) => {
+    if(paymentDetails){
+      return Payment.findByIdAndRemove(paymentId).then((deletedPayment) => {
+        if(deletedPayment){
+          return res.status(200).json({
+            deletedPayment,
+            deleteState: "successful"
+          });
+        }
+        res.status(404).json({
+          errorMsg: "Unable To Delete Payment Details, Try Again",
+          deleteState: "unsuccessful"
+        });  
+      })
+      .catch((err) => {
+        if(err){
+          res.status(404).json({
+            errorMsg: "An Error Occured, Try Again"
+          });
+        }
+      });
+    }
+    res.status(404).json({
+      errorMsg: "No Payment\'s ID Matches The Provided ID"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        errorMsg: "An Error Occured, Try Again"
+      });
+    }
+  });
+});
+
 module.exports = router;
