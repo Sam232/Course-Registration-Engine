@@ -72,7 +72,7 @@ router.get("/view/single/student/:indexNumber", verifyToken, (req, res) => {
 router.post("/confirm-update", verifyToken, (req, res) => {
   var emailDetails = {
     firstName: req.body.firstName,
-    email: req.body.FinanceEmail,
+    email: req.body.financeEmail,
     loginToken: req.body.loginToken,
     token: req.body.token
   }
