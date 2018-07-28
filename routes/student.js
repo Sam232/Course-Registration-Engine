@@ -22,7 +22,7 @@ router.get("/welcome/:id", verifyStudentToken, (req, res) => {
 
   StudentPD.findById(studentId).then((studentDetails) => {
     if(studentDetails){
-      return Course.find({}).then((courses) => {
+      return Course.find({}).populate("lecturerId").then((courses) => {
         var scrcNumber = {
           allSemestersCourses: null,
           registeredCourses: null
@@ -31,7 +31,7 @@ router.get("/welcome/:id", verifyStudentToken, (req, res) => {
           scrcNumber.allSemestersCourses = courses;
           return RCourses.find({
             indexNumber: studentDetails.indexNumber
-          }).then((registeredCourses) => {
+          }).populate("lecturerId").then((registeredCourses) => {
             if(registeredCourses){
               scrcNumber.registeredCourses = registeredCourses;
               return res.status(200).json({
