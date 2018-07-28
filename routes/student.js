@@ -342,8 +342,8 @@ router.post("/add/course/:studentId", verifyStudentToken, (req, res) => {
             student: courseDetails.student
           }).then((fetchCourse) => {
             if(fetchCourse){
-              return res.status(404).json({
-                errorMsg: "You Have Already Registered For This Course"
+              return res.status(200).json({
+                msg: "You Have Already Registered For This Course"
               });
             }
 
