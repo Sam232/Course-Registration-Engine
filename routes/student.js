@@ -396,6 +396,51 @@ router.post("/add/course/:studentId", verifyStudentToken, (req, res) => {
   });
 });
 
+//Delete A Registered Course
+router.delete("/delete/course/:courseId", verifyStudentToken, (req, res) => {
+  var courseId = req.params.courseId;
+
+  if(!ObjectID.isValid(courseId)){
+    return res.status(404).json({
+      errorMsg: "An Invalid Course ID Provided"
+    });
+  }
+
+  RCourses.findById(courseId).then((courseDetails) => {
+    if(courseDetails){
+      return RCourses.findByIdAndRemove(courseId).then((deletedCourse) => {
+        if(deletedCourse){
+          return res.status(200).json({
+            deletedCourse,
+            deleteState: "successful"
+          });
+        }
+        res.status(404).json({
+          errorMsg: "Unable To Delete Course Details, Try Again",
+          deleteState: "unsuccessful"
+        });  
+      })
+      .catch((err) => {
+        if(err){
+          res.status(404).json({
+            errorMsg: "An Error Occured, Try Again"
+          });
+        }
+      });
+    }
+    res.status(404).json({
+      errorMsg: "No Registered Course\'s ID Matches The Provided ID"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        errorMsg: "An Error Occured, Try Again"
+      });
+    }
+  });
+});
+
 //Update Student
 router.put("/update/:id", verifyStudentToken, (req, res) => {
   var studentDetails = {
