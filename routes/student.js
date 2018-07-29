@@ -7,6 +7,7 @@ const Course = require("../models/Course");
 const RCourses = require("../models/RCourses");
 const Grade = require("../models/Grade");
 const StudentPD = require("../models/StudentPD");
+const StudentLogin = require("../models/StudentLogin");
 const LecturerPD = require("../models/LecturerPD");
 const RDates = require("../models/RDates");
 
