@@ -30,7 +30,7 @@ router.get("/welcome/:id", verifyStudentToken, (req, res) => {
         if(courses){
           scrcNumber.allSemestersCourses = courses;
           return RCourses.find({
-            indexNumber: studentDetails.indexNumber
+            student: studentDetails._id
           }).populate("lecturerId").then((registeredCourses) => {
             if(registeredCourses){
               scrcNumber.registeredCourses = registeredCourses;
