@@ -141,7 +141,7 @@ router.get("/view/grade/:studentId/:indexNumber/:level/:semester", verifyStudent
         semester: studentDetails.semester
       }).then((fetchPayment) => {
         if(fetchPayment){
-          if(fetchPayment.paid == true){
+          if(fetchPayment.paid == "Paid"){
             return Grade.find({
               indexNumber: studentDetails.indexNumber,
               level: studentDetails.level,
