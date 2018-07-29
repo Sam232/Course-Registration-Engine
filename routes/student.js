@@ -397,16 +397,12 @@ router.post("/add/course/:studentId", verifyStudentToken, (req, res) => {
 });
 
 //Delete A Registered Course
-router.delete("/delete/course/:courseId", verifyStudentToken, (req, res) => {
-  var courseId = req.params.courseId;
+router.delete("/delete/course/:courseCode", verifyStudentToken, (req, res) => {
+  var courseCode = req.params.courseCode;
 
-  if(!ObjectID.isValid(courseId)){
-    return res.status(404).json({
-      errorMsg: "An Invalid Course ID Provided"
-    });
-  }
-
-  RCourses.findById(courseId).then((courseDetails) => {
+  RCourses.findOne({
+    code: courseCode
+  }).then((courseDetails) => {
     if(courseDetails){
       return RCourses.findByIdAndRemove(courseId).then((deletedCourse) => {
         if(deletedCourse){
