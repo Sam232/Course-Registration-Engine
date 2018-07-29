@@ -547,7 +547,7 @@ router.put("/update/:id", verifyStudentToken, (req, res) => {
 });
 
 //Update Student-Login
-router.put("/update/student-login/", verifyStudentToken, (req, res) => {
+router.put("/update/student/login/", verifyStudentToken, (req, res) => {
   var loginDetails = {
     indexNumber: req.body.indexNumber,
     oldPassword: req.body.oldPassword,
