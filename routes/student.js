@@ -404,7 +404,9 @@ router.delete("/delete/course/:courseCode", verifyStudentToken, (req, res) => {
     code: courseCode
   }).then((courseDetails) => {
     if(courseDetails){
-      return RCourses.findByIdAndRemove(courseId).then((deletedCourse) => {
+      return RCourses.findOneAndRemove({
+        code: courseCode
+      }).then((deletedCourse) => {
         if(deletedCourse){
           return res.status(200).json({
             deletedCourse,
