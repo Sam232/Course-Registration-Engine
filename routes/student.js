@@ -476,17 +476,17 @@ router.put("/update/:id", verifyStudentToken, (req, res) => {
     if(newStudent.length > 0){
       if(newStudent[0].email == studentDetails.email){
         return res.status(404).json({
-          errorMsg: "Provided Email Address Of The Student Already Exist"
+          errorMsg: "Provided Email Address Already Exist"
         });
       }
       else if(newStudent[0].mobileNumber == studentDetails.mobileNumber){
         return res.status(404).json({
-          errorMsg: "Provided Mobile Number Of The Student Already Exist"
+          errorMsg: "Provided Mobile Number Already Exist"
         });
       }
       else{
         return res.status(404).json({
-          errorMsg: "Provided Index Number Of The Student Already Exist"
+          errorMsg: "Provided Index Number Already Exist"
         });
       }
     }
@@ -499,7 +499,7 @@ router.put("/update/:id", verifyStudentToken, (req, res) => {
         mobileNumber: studentDetails.mobileNumber,
         indexNumber: studentDetails.indexNumber
       }
-    }).then((oldDetails) => {
+    }, {new: false}).then((oldDetails) => {
       if(oldDetails){
         return StudentLogin.findOneAndUpdate({
           indexNumber: oldDetails.indexNumber
