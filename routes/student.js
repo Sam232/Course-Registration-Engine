@@ -499,7 +499,7 @@ router.put("/update/:id", verifyStudentToken, (req, res) => {
         mobileNumber: studentDetails.mobileNumber,
         indexNumber: studentDetails.indexNumber
       }
-    }, {new: false}).then((oldDetails) => {
+    }).then((oldDetails) => {
       if(oldDetails){
         return StudentLogin.findOneAndUpdate({
           indexNumber: oldDetails.indexNumber
