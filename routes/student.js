@@ -527,13 +527,13 @@ router.put("/update/:id", verifyStudentToken, (req, res) => {
         });
       }
       res.status(404).json({
-        errorMsg: "Unable To Update Student\'s PD"
+        errorMsg: "Unable To Update Your Personal Details"
       });
     })
     .catch((err) => {
       res.status(404).json({
         err,
-        errorMsg: "Unable To Update Student\'s PD"
+        errorMsg: "Unable To Update Your Personal Details"
       });
     });
   })
