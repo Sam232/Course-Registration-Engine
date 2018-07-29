@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {ObjectID} = require("mongodb");
 const validator = require("email-validator");
+const bcrypt = require("bcrypt");
 
 const Payment = require("../models/Payment");
 const Course = require("../models/Course");
