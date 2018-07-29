@@ -512,15 +512,15 @@ router.put("/update/:id", verifyStudentToken, (req, res) => {
               updateState: "successful"
             });
           }
-          res.status(200).json({
-            updateState: "unsuccessful"
+          res.status(404).json({
+            errorMsg: "Update Unsuccessful"
           });
         })
         .catch((err) => {
           if(err){
-            res.status(200).json({
+            res.status(404).json({
               err,
-              updateState: "unsuccessful"
+              errorMsg: "Update Unsuccessful"
             });
           }
         });
