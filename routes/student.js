@@ -598,8 +598,8 @@ router.put("/update/student-login/", verifyStudentToken, (req, res) => {
                     updateState: "successful"
                   });
                 }
-                res.status(200).json({
-                  updateState: "unsuccessful"
+                res.status(404).json({
+                  errorMsg: "unsuccessful"
                 });
               })
               .catch((err) => {
@@ -628,7 +628,6 @@ router.put("/update/student-login/", verifyStudentToken, (req, res) => {
       })
       .catch((err) => {
         if(err){
-          console.log(err)
           res.status(404).json({
             errorMsg: "An Error Occurred, Try Again"
           });
