@@ -153,9 +153,8 @@ router.get("/view/grade/:studentId/:indexNumber/:level/:semester", verifyStudent
                   queryState: "successful"
                 });
               }
-              res.status(200).json({
-                errorMsg: "Unable To Fetch Your Grades, Try Again",
-                queryState: "unsuccessful"
+              res.status(404).json({
+                errorMsg: "Unable To Fetch Your Grades, Try Again"
               });
             })
             .catch((err) => {
