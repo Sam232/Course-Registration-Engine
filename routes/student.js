@@ -414,6 +414,7 @@ router.delete("/delete/course/:courseCode", verifyStudentToken, (req, res) => {
           });
         }
         res.status(404).json({
+          deletedCourse,
           errorMsg: "Unable To Delete Course Details, Try Again",
           deleteState: "unsuccessful"
         });  
