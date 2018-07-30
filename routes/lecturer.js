@@ -777,8 +777,8 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
             }).then((student) => {
               if(student){
                 var message = `Dear ${student.firstName}, your exam grade for ${addedGrade.courseName} has been uploaded to the GTUC COURSE-REG platform. Please login to view your Grade.`;
-                return SMSAPI(Twilio, message, "+233"+student.mobileNumber).then((res) => {
-                  if(res){
+                return SMSAPI(Twilio, message, "+233"+student.mobileNumber).then((response) => {
+                  if(response){
                     return res.status(200).json({
                       addedGrade,
                       addState: "successful",
@@ -788,7 +788,6 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
                 })
                 .catch((err) => {
                   if(err){
-                    console.log(err)
                     res.status(404).json({
                       err,
                       addState: "successful",
