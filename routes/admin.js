@@ -39,7 +39,7 @@ router.post("/confirm-update/", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update your profile details. If it was you click on this link <a href=https://gtuccr.herokuapp.com/admin/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
@@ -328,7 +328,7 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
 
     new LecturerPD(lecturerPD).save().then((personalDetails) => {
       if(personalDetails){
-        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:3000/login/${personalDetails.linkId} target=_blank>login link</a>`;
+        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=https://gtuccr.herokuapp.com/login/${personalDetails.linkId} target=_blank>LOGIN LINK</a>`;
 
         return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
           if(sent){
@@ -385,7 +385,7 @@ router.post("/confirm-update/lecturer", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.lecturerFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/lecturer/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.lecturerFirstName}\'s profile details. If it was you click on this link <a href=https://gtuccr.herokuapp.com/admin/confirm-update/lecturer/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
@@ -743,7 +743,7 @@ router.post("/add/finance", verifyToken, (req, res) => {
 
     new FinancePD(financePD).save().then((personalDetails) => {
       if(personalDetails){
-        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=http://localhost:3000/login/${personalDetails.linkId} target=_blank>login link</a>`;
+        var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, you can login to the application using this link <a href=https://gtuccr.herokuapp.com/login/${personalDetails.linkId} target=_blank>LOGIN LINK</a>`;
 
         return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
           if(sent){
@@ -801,7 +801,7 @@ router.post("/confirm-update/finance", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.financeFirstName}\'s profile details. If it was you click on this link <a href=http://localhost:3000/admin/confirm-update/finance/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+  var message = `Dear ${emailDetails.adminFirstName}, you have requested to update ${emailDetails.financeFirstName}\'s profile details. If it was you click on this link <a href=https://gtuccr.herokuapp.com/admin/confirm-update/finance/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>UPDATE PROFILE</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
@@ -1095,7 +1095,7 @@ router.post("/add/student", verifyToken, (req, res) => {
 
           new StudentLogin(loginDetails).save().then((studentLoginDetails) => {
             if(studentLoginDetails){
-              var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, your new password is <b>${password}</b>. You can login to the application using this link <a href=http://localhost:3000/login target=_blank>login link</a>`;
+              var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, your new password is <b>${password}</b>. You can login to the application using this link <a href=https://gtuccr.herokuapp.com/login target=_blank>LOGIN LINK</a>`;
 
               return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
                 if(sent){

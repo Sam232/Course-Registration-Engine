@@ -118,7 +118,7 @@ router.post("/:linkId", (req, res) => {
                   });
                 }
     
-                var message = `Dear ${lecturerDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:3000/lecturer/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
+                var message = `Dear ${lecturerDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=https://gtuccr.herokuapp.com/lecturer/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
                 
                 EmailAPI(Mailgun, lecturerDetails, message).then((sent) => {
                   if(sent){
@@ -199,7 +199,7 @@ router.post("/:linkId", (req, res) => {
                     });
                   }
                   
-                  var message = `Dear ${financeDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:3000/finance/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
+                  var message = `Dear ${financeDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=https://gtuccr.herokuapp.com/finance/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
     
                   EmailAPI(Mailgun, financeDetails, message).then((sent) => {
                     if(sent){
@@ -281,7 +281,7 @@ router.post("/:linkId", (req, res) => {
                       });
                     }
                     
-                    var message = `Dear ${adminDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=http://localhost:3000/admin/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
+                    var message = `Dear ${adminDetails.firstName}, you can login to GTUC COURSE-REG using this <a href=https://gtuccr.herokuapp.com/admin/welcome/${token}>LOGIN LINK</a>. Please note that, this link is valid for only 24 hours and also becomes inactive after you logout from the application.`;
       
                     EmailAPI(Mailgun, adminDetails, message).then((sent) => {
                       if(sent){
@@ -481,7 +481,7 @@ router.post("/verify/student-email", (req, res) => {
             });
           }
 
-          var message = `Dear, ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=http://localhost:3000/login/update/password/${token}>UpdatePasswordLink</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
+          var message = `Dear, ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=https://gtuccr.herokuapp.com/login/update/password/${token}>UpdatePasswordLink</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
 
           EmailAPI(Mailgun, studentDetails, message).then((sent) => {
             if(sent){

@@ -116,7 +116,7 @@ router.post("/confirm-update", verifyToken, (req, res) => {
     }); 
   }
 
-  var message = `Dear ${emailDetails.firstName}, you have requested to update your profile details. If it was you click on this link <a href=http://localhost:3000/lecturer/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>Update Profile</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
+  var message = `Dear ${emailDetails.firstName}, you have requested to update your profile details. If it was you click on this link <a href=https://gtuccr.herokuapp.com/lecturer/confirm-update/${emailDetails.loginToken}/${emailDetails.token}/ target=_blank>UPDATE PROFILE</a> to confirm the update otherwise ignore it if it was not you. Please note that you will not be able to make the update after 5 minutes`;
 
   EmailAPI(Mailgun, emailDetails, message).then((sent) => {
     if(sent){
