@@ -481,7 +481,7 @@ router.post("/verify/student-email", (req, res) => {
             });
           }
 
-          var message = `Dear, ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=https://gtuccr.herokuapp.com/login/update/password/${token}>UPDATE PASSWORD LINK</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
+          var message = `Dear ${studentDetails.firstName}, you made a request to update your password. Click on this <a href=https://gtuccr.herokuapp.com/login/update/password/${token}>UPDATE PASSWORD LINK</a> to update your password otherwise ignore it if it was not you. Please take note that the update link password will be inactive after 5 minutes.`;
 
           EmailAPI(Mailgun, studentDetails, message).then((sent) => {
             if(sent){
