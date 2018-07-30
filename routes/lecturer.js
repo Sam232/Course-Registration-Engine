@@ -788,6 +788,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
                 })
                 .catch((err) => {
                   if(err){
+                    console.log(err)
                     res.status(404).json({
                       err,
                       addState: "successful",
