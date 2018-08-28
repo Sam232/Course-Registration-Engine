@@ -129,9 +129,8 @@ router.get("/view/admin/:id", verifyToken, (req, res) => {
         queryState: "successful"
       });
     }
-    res.status(200).json({
-      msg: "Admin\'s ID Does Not Match The Provided ID",
-      queryState: "unsuccessful"
+    res.status(404).json({
+      errorMsg: "Admin\'s ID Does Not Match The Provided ID"
     });
   })
   .catch((err) => {

@@ -27,9 +27,8 @@ router.get("/view/finance/:id", verifyToken, (req, res) => {
         queryState: "successful"
       });
     }
-    res.status(200).json({
-      msg: "No Financial Accountant\'s ID Matches The Provided ID",
-      queryState: "unsuccessful"
+    res.status(404).json({
+      errorMsg: "No Financial Accountant\'s ID Does Not Match The Provided ID"
     });
   })
   .catch((err) => {

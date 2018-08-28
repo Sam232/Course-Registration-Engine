@@ -105,9 +105,8 @@ router.get("/view/student/:id", verifyStudentToken, (req, res) => {
         queryState: "successful"
       });
     }
-    res.status(200).json({
-      msg: "No Student\'s ID Matches The Provided ID",
-      queryState: "unsuccessful"
+    res.status(404).json({
+      errorMsg: "No Student\'s ID Does Not Match The Provided ID"
     });
   })
   .catch((err) => {
