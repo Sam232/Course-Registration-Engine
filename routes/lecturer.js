@@ -764,7 +764,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
       }).then((fetchedGrade) => {
         if(fetchedGrade){
           return res.status(404).json({
-            errorMsg: "The Grade Details Have Been Already Added",
+            errorMsg:  `The Excel File Contains Duplicate Grade Details For The Student With The ID ${fetchedGrade.indexNumber}, Please Correct And Upload Again.`,
             addState: "unsuccessful"
           });
         }
