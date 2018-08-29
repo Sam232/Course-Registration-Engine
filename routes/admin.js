@@ -80,7 +80,7 @@ router.put("/update/admin/:id", verifyToken, (req, res) => {
     }); 
   }
 
-  if(adminDetails.mobileNumber.length !== 10 && adminDetails.mobileNumber.substring(0, 1) !== 0){
+  if(adminDetails.mobileNumber.length !== 10 && adminDetails.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       errorMsg: "Valid Mobile Number Is Required"
     });
@@ -303,7 +303,7 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
     }); 
   }
 
-  if(lecturerPD.mobileNumber.length !== 10 && lecturerPD.mobileNumber.substring(0, 1) !== 0){
+  if(lecturerPD.mobileNumber.length !== 10 && lecturerPD.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       errorMsg: "Valid Mobile Number Is Required"
     });
@@ -427,7 +427,7 @@ router.put("/update/lecturer/:id", verifyToken, (req, res) => {
     }); 
   }
 
-  if(lecturerDetails.mobileNumber.length !== 10 && lecturerDetails.mobileNumber.substring(0, 1) !== 0){
+  if(lecturerDetails.mobileNumber.length !== 10 && lecturerDetails.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       lecturerDetails,
       errorMsg: "Valid Mobile Number Is Required"
@@ -718,7 +718,7 @@ router.post("/add/finance", verifyToken, (req, res) => {
     }); 
   }
 
-  if(financePD.mobileNumber.length !== 10 && financePD.mobileNumber.substring(0, 1) !== 0){
+  if(financePD.mobileNumber.length !== 10 && financePD.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       errorMsg: "Valid Mobile Number Is Required"
     });
@@ -843,7 +843,7 @@ router.put("/update/finance/:id", verifyToken, (req, res) => {
     }); 
   }
 
-  if(financeDetails.mobileNumber.length !== 10 && financeDetails.mobileNumber.substring(0, 1) !== 0){
+  if(financeDetails.mobileNumber.length !== 10 && financeDetails.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       financeDetails,
       errorMsg: "Valid Mobile Number Is Required"
@@ -1051,7 +1051,7 @@ router.post("/add/student", verifyToken, (req, res) => {
     }); 
   }
 
-  if(studentPD.mobileNumber.length !== 10 && studentPD.mobileNumber.substring(0, 1) !== 0){
+  if(studentPD.mobileNumber.length !== 10 && studentPD.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       errorMsg: "Valid Mobile Number Is Required"
     });
@@ -1190,7 +1190,7 @@ router.put("/update/student/:id", verifyToken, (req, res) => {
     }); 
   }
 
-  if(studentDetails.mobileNumber.length !== 10 && studentDetails.mobileNumber.substring(0, 1) !== 0){
+  if(studentDetails.mobileNumber.length !== 10 && studentDetails.mobileNumber.subString(0, 1) !== 0){
     return res.status(404).json({
       errorMsg: "Valid Mobile Number Is Required"
     });
