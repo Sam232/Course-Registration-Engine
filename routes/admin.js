@@ -1064,17 +1064,17 @@ router.post("/add/student", verifyToken, (req, res) => {
     if(newPersonalDetails.length > 0){
       if(newPersonalDetails[0].email == studentPD.email){
         return res.status(404).json({
-          errorMsg: "Provided Email Address Of The New Student Already Exist"
+          errorMsg: `The Excel File Contains An Email Address, ${studentPD.email}, That Already Exist. Please Change And Upload Again`
         });
       }
       else if(newPersonalDetails[0].mobileNumber == studentPD.mobileNumber){
         return res.status(404).json({
-          errorMsg: "Provided Mobile Number Of The New Student Already Exist"
+          errorMsg: `The Excel File Contains A Mobile Number, ${studentPD.mobileNumber}, That Already Exist. Please Change And Upload Again`
         });
       }
       else{
         return res.status(404).json({
-          errorMsg: "Provided Index Number Of The New Student Already Exist"
+          errorMsg: `The Excel File Contains An Index Number, ${studentPD.indexNumber}, That Already Exist. Please Change And Upload Again`
         });
       }
     }
