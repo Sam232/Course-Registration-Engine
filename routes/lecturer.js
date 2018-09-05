@@ -947,12 +947,33 @@ router.get("/view/grades/:lecturerId", verifyToken, (req, res) => {
 
 //Update Grade
 router.put("/update/grade/:gradeId", verifyToken, (req, res) => {
+  var totalMarks = req.body.totalMarks;
+  const newGrade = (totalMarks) => {
+    if(totalMarks >= 70 && totalMarks <= 100){
+      return "A";
+    }
+    if(totalMarks >= 60 && totalMarks <= 69){
+      return "B";
+    }
+    if(totalMarks >= 50 && totalMarks <= 59){
+      return "C";
+    }
+    if(totalMarks >= 40 && totalMarks <= 49){
+      return "D";
+    }
+    if(totalMarks <= 30 ){
+      return "F";
+    }
+  };
+
   var gradeDetails = {
     gradeId: req.params.gradeId,
     courseCode: req.body.courseCode,
     courseName: req.body.courseName,
-    grade: req.body.grade,
-    marks: req.body.marks,
+    grade: newGrade,
+    classMarks: req.body.classMarks,
+    examMarks: req.body.examMarks,
+    totalMarks: req.body.totalMarks,
     level: req.body.level,
     semester: req.body.semester,
     indexNumber: req.body.indexNumber
@@ -1016,7 +1037,9 @@ router.put("/update/grade/:gradeId", verifyToken, (req, res) => {
             courseCode: gradeDetails.courseCode,
             courseName: gradeDetails.courseName,
             grade: gradeDetails.grade,
-            marks: gradeDetails.marks,
+            classMarks: gradeDetails.classMarks,
+            examMarks: gradeDetails.examMarks,
+            totalMarks: gradeDetails.totalMarks,
             level: gradeDetails.level,
             semester: gradeDetails.semester,
             indexNumber: gradeDetails.indexNumber,
