@@ -1041,12 +1041,12 @@ router.post("/add/student", verifyToken, (req, res) => {
   var studentPD = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.email ? req.body.email : null,
-    mobileNumber: req.body.mobileNumber ? req.body.mobileNumber : null,
+    email: req.body.email ? req.body.email : "",
+    mobileNumber: req.body.mobileNumber ? req.body.mobileNumber : "",
     indexNumber: req.body.indexNumber
   };
 
-  if(studentPD.email !== null){
+  if(studentPD.email !== ""){
     if(!validator.validate(studentPD.email)){
       return res.status(404).json({
         errorMsg: `The Excel File Contains An Invalid Email Address For The Student With The ID Number, ${studentPD.email}, Please Change And Upload Again.`
@@ -1054,7 +1054,7 @@ router.post("/add/student", verifyToken, (req, res) => {
     }
   }
   
-  if(studentPD.mobileNumber !== null){
+  if(studentPD.mobileNumber !== ""){
     if(studentPD.mobileNumber.length !== 10 && studentPD.mobileNumber.substring(0, 1) !== 0){
       return res.status(404).json({
         errorMsg: `The Excel File Contains An Invalid Phone Number For The Student With The ID Number, ${studentPD.email}, Please Change And Upload Again.`
@@ -1063,25 +1063,34 @@ router.post("/add/student", verifyToken, (req, res) => {
   }  
 
   StudentPD.find({}).then((studentPersonalDetails) => {
-    var newPersonalDetails = studentPersonalDetails.filter(personalDetails => personalDetails.email == studentPD.email || personalDetails.mobileNumber == studentPD.mobileNumber || personalDetails.indexNumber == studentPD.indexNumber);
+    if(studentPD.email && studentPD.mobileNumber){
+      var newPersonalDetails = studentPersonalDetails.filter(personalDetails => personalDetails.email == studentPD.email || personalDetails.mobileNumber == studentPD.mobileNumber);
 
-    if(newPersonalDetails.length > 0){
-      if(newPersonalDetails[0].email == studentPD.email){
-        return res.status(404).json({
-          errorMsg: `The Excel File Contains An Email Address, ${studentPD.email}, That Already Exist. Please Change And Upload Again.`
-        });
-      }
-      else if(newPersonalDetails[0].mobileNumber == studentPD.mobileNumber){
-        return res.status(404).json({
-          errorMsg: `The Excel File Contains A Mobile Number, ${studentPD.mobileNumber}, That Already Exist. Please Change And Upload Again.`
-        });
-      }
-      else{
-        return res.status(404).json({
-          errorMsg: `The Excel File Contains An Index Number, ${studentPD.indexNumber}, That Already Exist. Please Change And Upload Again.`
-        });
+      if(newPersonalDetails.length > 0){
+        if(newPersonalDetails[0].email == studentPD.email){
+          return res.status(404).json({
+            errorMsg: `The Excel File Contains An Email Address, ${studentPD.email}, That Already Exist. Please Change And Upload Again.`
+          });
+        }
+        else{
+          return res.status(404).json({
+            errorMsg: `The Excel File Contains A Mobile Number, ${studentPD.mobileNumber}, That Already Exist. Please Change And Upload Again.`
+          });
+        }
       }
     }
+    
+    else{
+      var newPersonalDetails = studentPersonalDetails.filter(personalDetails => personalDetails.indexNumber == studentPD.indexNumber);
+
+      if(newPersonalDetails.length > 0){
+        if(newPersonalDetails[0].indexNumber == studentPD.indexNumber){
+          return res.status(404).json({
+            errorMsg: `The Excel File Contains An Index Number, ${studentPD.indexNumber}, That Already Exist. Please Change And Upload Again.`
+          });
+        }
+      }      
+    }    
 
     new StudentPD(studentPD).save().then((personalDetails) => {
       var password = studentPD.indexNumber;
