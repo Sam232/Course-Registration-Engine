@@ -1049,7 +1049,7 @@ router.post("/add/student", verifyToken, (req, res) => {
   if(studentPD.email !== null){
     if(!validator.validate(studentPD.email)){
       return res.status(404).json({
-        errorMsg: "Valid Email Address Is Required"
+        errorMsg: `The Excel File Contains An Invalid Email Address For The Student With The ID Number, ${studentPD.email}, Please Change And Upload Again.`
       }); 
     }
   }
@@ -1057,7 +1057,7 @@ router.post("/add/student", verifyToken, (req, res) => {
   if(studentPD.mobileNumber !== null){
     if(studentPD.mobileNumber.length !== 10 && studentPD.mobileNumber.substring(0, 1) !== 0){
       return res.status(404).json({
-        errorMsg: "Valid Mobile Number Is Required"
+        errorMsg: `The Excel File Contains An Invalid Phone Number For The Student With The ID Number, ${studentPD.email}, Please Change And Upload Again.`
       });
     }
   }  

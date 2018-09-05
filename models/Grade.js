@@ -15,7 +15,15 @@ var GradeSchema = new Schema({
     type: String,
     required: true
   },
-  marks: {
+  classMarks: {
+    type: String,
+    required: true
+  },
+  examMarks: {
+    type: String,
+    required: true
+  },
+  totalMarks: {
     type: String,
     required: true
   },

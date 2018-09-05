@@ -736,11 +736,32 @@ router.get("/view/saved/courses/:lecturerId", verifyToken, (req, res) => {
 //CRUD GRADES
 //Add Grade
 router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
+  var totalMarks = req.body.totalMarks;
+  const newGrade = (totalMarks) => {
+    if(totalMarks >= 70 && totalMarks <= 100){
+      return "A";
+    }
+    if(totalMarks >= 60 && totalMarks <= 69){
+      return "B";
+    }
+    if(totalMarks >= 50 && totalMarks <= 59){
+      return "C";
+    }
+    if(totalMarks >= 40 && totalMarks <= 49){
+      return "D";
+    }
+    if(totalMarks <= 30 ){
+      return "F";
+    }
+  };
+
   var gradeDetails = {
     courseCode: req.body.courseCode,
     courseName: req.body.courseName,
-    grade: req.body.grade,
-    marks: req.body.marks,
+    grade: newGrade,
+    classMarks: req.body.classMarks,
+    examMarks: req.body.examMarks,
+    totalMarks,
     level: req.body.level,
     semester: req.body.semester,
     indexNumber: req.body.indexNumber,
@@ -811,7 +832,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
             });
           }
           res.status(404).json({
-            errorMsg: "Unable To Add New Grade Details, Try Again",
+            errorMsg: `Unable To Add The New Grade Details For The Student With ID Number ${gradeDetails.indexNumber}, Please Try Again`,
             addState: "unsuccessful"
           });
         })
@@ -819,7 +840,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
           if(err){
             res.status(404).json({
               err,
-              errorMsg: "An Error Occured, Try Again"
+              errorMsg: `An Error Occured While Adding The Grade Details For The Student With ID Number ${gradeDetails.indexNumber}, Please Try Again`
             });
           }
         });
