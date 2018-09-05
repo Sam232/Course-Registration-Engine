@@ -970,7 +970,7 @@ router.put("/update/grade/:gradeId", verifyToken, (req, res) => {
     gradeId: req.params.gradeId,
     courseCode: req.body.courseCode,
     courseName: req.body.courseName,
-    grade: newGrade,
+    grade: newGrade(totalMarks),
     classMarks: req.body.classMarks,
     examMarks: req.body.examMarks,
     totalMarks: req.body.totalMarks,
