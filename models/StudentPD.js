@@ -16,7 +16,7 @@ var StudentPDSchema = new Schema({
     required: false
   },
   mobileNumber: {
-    type: Number,
+    type: String,
     required: false
   },
   indexNumber: {
