@@ -1046,17 +1046,21 @@ router.post("/add/student", verifyToken, (req, res) => {
     indexNumber: req.body.indexNumber
   };
 
-  if(!validator.validate(studentPD.email)){
-    return res.status(404).json({
-      errorMsg: "Valid Email Address Is Required"
-    }); 
+  if(studentPD.email !== null){
+    if(!validator.validate(studentPD.email)){
+      return res.status(404).json({
+        errorMsg: "Valid Email Address Is Required"
+      }); 
+    }
   }
-
-  if(studentPD.mobileNumber.length !== 10 && studentPD.mobileNumber.substring(0, 1) !== 0){
-    return res.status(404).json({
-      errorMsg: "Valid Mobile Number Is Required"
-    });
-  }
+  
+  if(studentPD.mobileNumber !== null){
+    if(studentPD.mobileNumber.length !== 10 && studentPD.mobileNumber.substring(0, 1) !== 0){
+      return res.status(404).json({
+        errorMsg: "Valid Mobile Number Is Required"
+      });
+    }
+  }  
 
   StudentPD.find({}).then((studentPersonalDetails) => {
     var newPersonalDetails = studentPersonalDetails.filter(personalDetails => personalDetails.email == studentPD.email || personalDetails.mobileNumber == studentPD.mobileNumber || personalDetails.indexNumber == studentPD.indexNumber);
@@ -1080,11 +1084,7 @@ router.post("/add/student", verifyToken, (req, res) => {
     }
 
     new StudentPD(studentPD).save().then((personalDetails) => {
-      var password = generatePassword.generate({
-        length: 10,
-        numbers: true,
-        symbols: true
-      });
+      var password = studentPD.indexNumber;
 
       if(personalDetails){
         return bcrypt.hash(password, 10).then((hashedPassword) => {
@@ -1095,34 +1095,19 @@ router.post("/add/student", verifyToken, (req, res) => {
 
           new StudentLogin(loginDetails).save().then((studentLoginDetails) => {
             if(studentLoginDetails){
-              var message = `Welcome ${personalDetails.firstName} to GTUC COURSE-REG, your new password is <b>${password}</b>. You can login to the application using this link <a href=https://gtuccr.herokuapp.com/login target=_blank>LOGIN LINK</a>`;
-
-              return EmailAPI(Mailgun, personalDetails, message).then((sent) => {
-                if(sent){
-                  return res.status(200).json({
-                    studentPD: personalDetails,
-                    emailSent: true
-                  });
-                }
-              })
-              .catch((err) => {
-                if(err){
-                  return res.status(404).json({
-                    err,
-                    studentPD: personalDetails,
-                    emailSent: false
-                  });
-                }
+              return res.status(200).json({
+                studentPD: personalDetails,
+                studentAdded: true
               });
             }
             res.status(404).json({
-              errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+              errorMsg: `An Error Occured. Delete The Student With The ID Number, ${studentPD.indexNumber}, And Add Again.`
             });
           })
           .catch((err) => {
             if(err){
               res.status(404).json({
-                errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+                errorMsg: `An Error Occured. Delete The Student With The ID Number, ${studentPD.indexNumber}, And Add Again.`
               });
             }
           })
@@ -1132,17 +1117,17 @@ router.post("/add/student", verifyToken, (req, res) => {
             StudentPD.findByIdAndRemove(personalDetails._id).then((removedStudentDetails) => {
               if(removedStudentDetails){
                 return res.status(404).json({
-                  errorMessage: "Unable To Add New Student, Try Again."
+                  errorMessage: `Unable To Add The Student With The ID Number, ${studentPD.indexNumber}, Please Add Student Again.`
                 });
               }
               res.status(404).json({
-                errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+                errorMsg: `An Error Occured. Delete The Student With The ID Number, ${studentPD.indexNumber}, And Add Again.`
               });
             })
             .catch((err) => {
               if(err){
                 res.status(404).json({
-                  errorMsg: "An Error Occured. Delete The Student\'s Added Details And Try Again."
+                  errorMsg: `An Error Occured. Delete The Student With The ID Number, ${studentPD.indexNumber}, And Add Again.`
                 });
               }
             });
@@ -1150,13 +1135,13 @@ router.post("/add/student", verifyToken, (req, res) => {
         });
       }
       res.status(404).json({
-        errorMsg: "Unable To Add Student, Try Again",
+        errorMsg: `Unable To Add Student With The ID Number, ${studentPD.indexNumber} , Try Again`,
       });
     })
     .catch((err) => {
       res.status(404).json({
         err,
-        errorMsg: "Error Completing Registration"
+        errorMsg: `Unable To Add Student With The ID Number, ${studentPD.indexNumber} , Try Again`
       });
     });
   })

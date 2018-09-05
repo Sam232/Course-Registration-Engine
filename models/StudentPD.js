@@ -13,11 +13,11 @@ var StudentPDSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: false
   },
   mobileNumber: {
     type: Number,
-    required: true
+    required: false
   },
   indexNumber: {
     type: String,
