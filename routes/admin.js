@@ -1041,8 +1041,8 @@ router.post("/add/student", verifyToken, (req, res) => {
   var studentPD = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.email,
-    mobileNumber: req.body.mobileNumber,
+    email: req.body.email ? req.body.email : null,
+    mobileNumber: req.body.mobileNumber ? req.body.mobileNumber : null,
     indexNumber: req.body.indexNumber
   };
 
