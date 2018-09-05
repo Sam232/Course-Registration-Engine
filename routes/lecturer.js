@@ -758,7 +758,7 @@ router.post("/add/grade/:lecturerId", verifyToken, (req, res) => {
   var gradeDetails = {
     courseCode: req.body.courseCode,
     courseName: req.body.courseName,
-    grade: newGrade,
+    grade: newGrade(totalMarks),
     classMarks: req.body.classMarks,
     examMarks: req.body.examMarks,
     totalMarks,
