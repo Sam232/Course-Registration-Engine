@@ -176,7 +176,9 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
   FinancePD.findById(paymentDetails.financeId).then((financeDetails) => {
     if(financeDetails){
       return Payment.findOne({
-        indexNumber: paymentDetails.indexNumber
+        indexNumber: paymentDetails.indexNumber,
+        level: paymentDetails.level,
+        semester: paymentDetails.semester
       }).then((existingPayment) => {
         if(existingPayment){
           return res.status(404).json({
