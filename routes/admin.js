@@ -316,12 +316,12 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
     if(newPersonalDetails.length > 0){
       if(newPersonalDetails[0].email == lecturerPD.email){
         return res.status(404).json({
-          errorMsg: "Provided Email Address Of The New Lecturer Already Exist"
+          errorMsg: `The Provided Email Address, ${lecturerPD.email}, Has Been Already Assigned To A Lecturer, Please Change And Upload The Excel File Again`
         });
       }
       else{
         return res.status(404).json({
-          errorMsg: "Provided Mobile Number Of The New Lecturer Already Exist"
+          errorMsg: `The Provided Mobile Number, ${lecturerPD.mobileNumber}, Has Been Already Assigned To A Lecturer, Please Change And Upload The Excel File Again`
         });
       }
     }
@@ -349,14 +349,14 @@ router.post("/add/lecturer", verifyToken, (req, res) => {
         });
       }
       res.status(404).json({
-        errorMsg: "Unable To Add Lecturer, Try Again",
+        errorMsg: `Unable To Add The Lecturer With The Email Address, ${lecturerPD.email}, Please Try Again`,
       });
     })
     .catch((err) => {
       if(err){
         res.status(404).json({
           err,
-          errorMsg: "Unable To Add Lecturer, Try Again"
+          errorMsg: `An Error Occured While Adding The Lecturer With The Email Address, ${lecturerPD.email}, Please Try Again`
         });
       }      
     });
@@ -1079,7 +1079,7 @@ router.post("/add/student", verifyToken, (req, res) => {
         }
       }
     }
-    
+
     else{
       var newPersonalDetails = studentPersonalDetails.filter(personalDetails => personalDetails.indexNumber == studentPD.indexNumber);
 
