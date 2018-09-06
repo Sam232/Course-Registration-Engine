@@ -180,7 +180,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
       }).then((existingPayment) => {
         if(existingPayment){
           return res.status(404).json({
-            errorMsg: "A Payment Has Been Already Made For A Student With This Index Number"
+            errorMsg: `A Payment Has Been Already Made For The Student With The Index Number, ${existingPayment.indexNumber}`
           });
         }
         new Payment(paymentDetails).save().then((newPayment) => {
@@ -191,7 +191,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
             });
           }
           res.status(200).json({
-            msg: "Unable To Add New Payment",
+            msg: `Unable To Add New Payment For The Student With Index Number, ${existingPayment.indexNumber}`,
             addState: "unsuccessful"
           });          
         })
@@ -199,7 +199,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
           if(err){
             res.status(404).json({
               err,
-              errorMsg: "Unable To Add New Payment, Try Again"
+              errorMsg: `Unable To Add New Payment For The Student With Index Number, ${existingPayment.indexNumber}`
             });
           }
         });
@@ -208,7 +208,7 @@ router.post("/add/payment/:financeId", verifyToken, (req, res) => {
         if(err){
           res.status(404).json({
             err,
-            errorMsg: "An Error Occured, Try Again"
+            errorMsg: `Unable To Add New Payment For The Student With Index Number, ${existingPayment.indexNumber}`
           });
         }
       });
