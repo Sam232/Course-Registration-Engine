@@ -1209,11 +1209,11 @@ router.get("/download/course/registrants/:lecturerId", verifyToken, (req, res) =
           courses.forEach((course, index) => {
             const {firstName, lastName, email, mobileNumber, indexNumber} = course.student;
             students.push({
-              "firstName": firstName,
-              "lastName": lastName,
-              "email": email,
-              "mobileNumber": mobileNumber,
-              "indexNumber": indexNumber
+              "First Name": firstName,
+              "Last Name": lastName,
+              "Email Address": email,
+              "Mobile Number": mobileNumber,
+              "Index Number": indexNumber
             });
           });
 
