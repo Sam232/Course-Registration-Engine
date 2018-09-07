@@ -1189,4 +1189,66 @@ router.get("/view/course/registrants/:lecturerId", verifyToken, (req, res) => {
   });
 });
 
+//Download Students Registered For A Lecturer's Course
+router.get("/download/course/registrants/:lecturerId", verifyToken, (req, res) => {
+  var lecturerId = req.params.lecturerId;
+
+  if(!ObjectID.isValid(lecturerId)){
+    return res.status(404).json({
+      errorMsg: "Invalid Lecturer ID Provided"
+    });
+  }
+
+  LecturerPD.findById(lecturerId).then((lecturerDetails) => {
+    if(lecturerDetails){
+      return RCourses.find({
+        lecturerId
+      }).populate("student").then((courses) => {
+        var students = [];
+        if(courses.length > 0){
+          courses.forEach((course, index) => {
+            const {firstName, lastName, email, mobileNumber, indexNumber} = course.student;
+            students.push({
+              "firstName": firstName,
+              "lastName": lastName,
+              "email": email,
+              "mobileNumber": mobileNumber,
+              "indexNumber": indexNumber
+            });
+          });
+
+          return res.status(200).json({
+            students,
+            queryState: "successful"
+          });
+        }
+        res.status(200).json({
+          students,
+          queryState: "successful"
+        });
+      })
+      .catch((err) => {
+        if(err){
+          res.status(404).json({
+            err,
+            errorMsg: "An Error Occured, Try Again"
+          });
+        }
+      });
+    }
+    res.status(404).json({
+      errorMsg: "No Lecturer\'s ID Matches The Provided ID",
+      queryState: "unsuccessful"
+    });
+  })
+  .catch((err) => {
+    if(err){
+      res.status(404).json({
+        err,
+        errorMsg: "An Error Occured, Try Again"
+      });
+    }
+  });
+});
+
 module.exports = router;
