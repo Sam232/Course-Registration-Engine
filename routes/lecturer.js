@@ -1207,12 +1207,14 @@ router.get("/download/course/registrants/:lecturerId", verifyToken, (req, res) =
         var students = [];
         if(courses.length > 0){
           courses.forEach((course, index) => {
-            const {firstName, lastName, email, mobileNumber, indexNumber} = course.student;
+            const {indexNumber} = course.student;
             students.push({
-              "First Name": firstName,
-              "Last Name": lastName,
-              "Email Address": email,
-              "Mobile Number": mobileNumber,
+              "CODE": course.code,
+              "NAME": course.name,
+              "CLASS MARKS": "",
+              "EXAM MARKS": "",
+              "LEVEL": course.level,
+              "SEMESTER": course.semester,
               "Index Number": indexNumber
             });
           });
